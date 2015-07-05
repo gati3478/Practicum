@@ -97,4 +97,5 @@ proguard/
 gen-external-apklibs
 
 .DS_Store
+Thumbs.db
 /captures

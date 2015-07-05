@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">Practicum</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_sign_out">გამოსვლა</string>
+    <string name="txt_toolbar">Toolbar</string>
+    <string name="txt_floating_action_button">FloatActionButton</string>
+    <string name="txt_navigation_view">NavigationView</string>
+    <string name="txt_other">სხვა</string>
+    <string name="txt_wut">WUT</string>
+    <string name="drawer_close">უჯრის დახურვა</string>
+    <string name="drawer_open">უჯრის გახსნა</string>
+    <string name="nav_item_name_information">ინფორმაცია</string>
+    <string name="nav_item_name_change_location">ადგილის შეცვლა</string>
+    <string name="nav_item_name_notifs">შეტყობინებები</string>
+    <string name="nav_item_name_about">აპლიკაციის შესახებ</string>
+    <string name="content_description_nav_header">საბანაკე ხედი</string>
+    <string name="sample_nav_drawer_user_email">gpetr12@freeuni.edu.ge</string>
+    <string name="nav_item_name_main">მთავარი</string>
+    <string name="content_description_toolbarheader">Toolbar header</string>
+    <string name="hint_username">e-mail</string>
+    <string name="hint_password">პაროლი</string>
 </resources>
