@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        rootLayout = (CoordinatorLayout) findViewById(R.id.root_layout);
 
         fabBtn = (FloatingActionButton) findViewById(R.id.fabBtn);
         fabBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle(getString(R.string.app_name));
     }
 
