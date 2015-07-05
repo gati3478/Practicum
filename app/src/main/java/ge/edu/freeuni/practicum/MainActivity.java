@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,14 +17,14 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    CollapsingToolbarLayout collapsingToolbarLayout;
+    Toolbar mToolbar;
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle drawerToggle;
+    DrawerLayout mDrawerLayout;
+    ActionBarDrawerToggle mDrawerToggle;
 
-    CoordinatorLayout rootLayout;
-    FloatingActionButton fabBtn;
+    CoordinatorLayout mRootLayout;
+    FloatingActionButton mFabBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +36,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
     }
 
     private void initInstances() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerToggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, R.string.drawer_close, R.string.drawer_open);
-        drawerLayout.setDrawerListener(drawerToggle);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout, R.string.drawer_close, R.string.drawer_open);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        rootLayout = (CoordinatorLayout) findViewById(R.id.root_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        if (navigationView != null) {
+            setupDrawerContent(navigationView);
+        }
 
-        fabBtn = (FloatingActionButton) findViewById(R.id.fabBtn);
-        fabBtn.setOnClickListener(new View.OnClickListener() {
+        mRootLayout = (CoordinatorLayout) findViewById(R.id.root_layout);
+
+        mFabBtn = (FloatingActionButton) findViewById(R.id.fab_btn);
+        mFabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(rootLayout, "Hello. I am Snackbar!", Snackbar.LENGTH_SHORT)
+                Snackbar.make(mRootLayout, "I'm just pressing buttons", Snackbar.LENGTH_SHORT)
                         .setAction("Undo", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -66,20 +72,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-        collapsingToolbarLayout.setTitle(getString(R.string.app_name));
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+        mCollapsingToolbarLayout.setTitle(getString(R.string.app_name));
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
     }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+        mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -91,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item))
+        if (mDrawerToggle.onOptionsItemSelected(item))
             return true;
 
         // Handle action bar item clicks here. The action bar will
