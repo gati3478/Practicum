@@ -7,6 +7,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +17,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import ge.edu.freeuni.practicum.view.fragment.AboutFragment;
+import ge.edu.freeuni.practicum.view.fragment.ExchangeFragment;
+import ge.edu.freeuni.practicum.view.fragment.InfoFragment;
+import ge.edu.freeuni.practicum.view.fragment.MainFragment;
+import ge.edu.freeuni.practicum.view.fragment.NotificationsFragment;
 
-    Toolbar mToolbar;
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
+public class MainActivity extends AppCompatActivity {
 
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
+
+    Toolbar mToolbar;
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     CoordinatorLayout mRootLayout;
     FloatingActionButton mFabBtn;
@@ -41,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initInstances() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout, R.string.drawer_close, R.string.drawer_open);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
@@ -81,11 +89,48 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        //selectDrawerItem(menuItem);
                         menuItem.setChecked(true);
+                        setTitle(menuItem.getTitle());
                         mDrawerLayout.closeDrawers();
                         return true;
                     }
                 });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        Fragment fragment = null;
+
+        Class fragmentClass;
+        switch (menuItem.getItemId()) {
+            case R.id.nav_item_main:
+                fragmentClass = MainFragment.class;
+                break;
+            case R.id.nav_item_information:
+                fragmentClass = InfoFragment.class;
+                break;
+            case R.id.nav_item_change_location:
+                fragmentClass = ExchangeFragment.class;
+                break;
+            case R.id.nav_item_notifs:
+                fragmentClass = NotificationsFragment.class;
+                break;
+            case R.id.nav_item_about:
+                fragmentClass = AboutFragment.class;
+                break;
+            default:
+                fragmentClass = MainFragment.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
     @Override
