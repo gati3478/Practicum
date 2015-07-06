@@ -7,7 +7,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+# *.jar - need for Parse lib
 *.war
 *.ear
 
@@ -99,3 +99,4 @@ gen-external-apklibs
 .DS_Store
 Thumbs.db
 /captures
+gradle/wrapper/gradle-wrapper.jar
