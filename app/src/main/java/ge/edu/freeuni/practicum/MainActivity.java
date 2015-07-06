@@ -1,87 +1,63 @@
 package ge.edu.freeuni.practicum;
 
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import ge.edu.freeuni.practicum.view.fragment.AboutFragment;
 import ge.edu.freeuni.practicum.view.fragment.ExchangeFragment;
 import ge.edu.freeuni.practicum.view.fragment.InfoFragment;
 import ge.edu.freeuni.practicum.view.fragment.MainFragment;
 import ge.edu.freeuni.practicum.view.fragment.NotificationsFragment;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
-
-    Toolbar mToolbar;
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
-
-    CoordinatorLayout mRootLayout;
-    FloatingActionButton mFabBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initToolbar();
         initInstances();
+        insertInitialFragment();
     }
 
-    private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-    }
 
     private void initInstances() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout, R.string.drawer_close, R.string.drawer_open);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
+    }
 
-        mRootLayout = (CoordinatorLayout) findViewById(R.id.root_layout);
-
-        mFabBtn = (FloatingActionButton) findViewById(R.id.fab_btn);
-        mFabBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(mRootLayout, "I'm just pressing buttons", Snackbar.LENGTH_SHORT)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        })
-                        .show();
-            }
-        });
-
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-        mCollapsingToolbarLayout.setTitle(getString(R.string.app_name));
+    private void insertInitialFragment() {
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -89,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        //selectDrawerItem(menuItem);
+                        selectDrawerItem(menuItem);
                         menuItem.setChecked(true);
                         setTitle(menuItem.getTitle());
                         mDrawerLayout.closeDrawers();
@@ -163,11 +139,19 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_sign_out) {
-            return true;
+        switch (id) {
+            case R.id.action_sign_out:
+                return true;
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        //
+    }
 }
