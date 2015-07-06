@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tab_names">
+        <item>ინფორმაცია</item>
+        <item>ხალხი</item>
+        <item>ინვენტარი</item>
+    </string-array>
+</resources>
