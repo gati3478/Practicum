@@ -1,13 +1,28 @@
 package ge.edu.freeuni.practicum.view.fragment;
 
 import android.support.v4.app.Fragment;
-import android.view.View;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+import ge.edu.freeuni.practicum.R;
 
 /**
- * Created by gati3478 on 06.07.2015.
+ * Base fragment for drawers
  */
 public abstract class FragmentBase extends Fragment {
-    protected void initToolbar(View rootView) {
+    Toolbar mToolbar;
 
+    protected void initToolbar() {
+        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+
+        AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
+        final ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 }

@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         insertInitialFragment();
     }
 
-
     private void initInstances() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout, R.string.drawer_close, R.string.drawer_open);

@@ -8,9 +8,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +23,8 @@ import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionList
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends FragmentBase {
 
-    Toolbar mToolbar;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     CoordinatorLayout mRootLayout;
@@ -56,21 +52,8 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initToolbar();
+        super.initToolbar();
         initInstances();
-    }
-
-    private void initToolbar() {
-        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-
-        AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
-        final ActionBar actionBar = parentActivity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     private void initInstances() {
