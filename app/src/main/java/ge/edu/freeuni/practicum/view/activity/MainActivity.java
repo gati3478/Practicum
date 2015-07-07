@@ -1,5 +1,6 @@
 package ge.edu.freeuni.practicum.view.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import ge.edu.freeuni.practicum.R;
-import ge.edu.freeuni.practicum.view.fragment.drawer.AboutFragment;
 import ge.edu.freeuni.practicum.view.fragment.drawer.ExchangeFragment;
 import ge.edu.freeuni.practicum.view.fragment.drawer.InfoFragment;
 import ge.edu.freeuni.practicum.view.fragment.drawer.MainFragment;
@@ -78,8 +78,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 fragmentClass = NotificationsFragment.class;
                 break;
             case R.id.nav_item_about:
-                fragmentClass = AboutFragment.class;
-                break;
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return;
             default:
                 fragmentClass = MainFragment.class;
         }

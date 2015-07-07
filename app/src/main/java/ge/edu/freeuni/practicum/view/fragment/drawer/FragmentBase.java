@@ -31,6 +31,7 @@ public abstract class FragmentBase extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initToolbar();
         initDrawer();
+        initRootLayout();
         setHasOptionsMenu(true);
     }
 
@@ -52,7 +53,9 @@ public abstract class FragmentBase extends Fragment {
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, R.string.drawer_close, R.string.drawer_open);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+    }
 
+    private void initRootLayout() {
         mRootLayout = (CoordinatorLayout) getActivity().findViewById(R.id.root_layout);
     }
 
