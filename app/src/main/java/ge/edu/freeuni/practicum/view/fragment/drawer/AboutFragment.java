@@ -1,10 +1,10 @@
 package ge.edu.freeuni.practicum.view.fragment.drawer;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -25,11 +25,6 @@ import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionList
  */
 public class AboutFragment extends FragmentBase {
 
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
-
-    private CoordinatorLayout mRootLayout;
-    private FloatingActionButton mFabBtn;
-
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -38,7 +33,6 @@ public class AboutFragment extends FragmentBase {
      *
      * @return A new instance of fragment AboutFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AboutFragment newInstance() {
         AboutFragment fragment = new AboutFragment();
         Bundle args = new Bundle();
@@ -51,17 +45,20 @@ public class AboutFragment extends FragmentBase {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        super.initToolbar();
-        initInstances();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /* Do some stuff here */
     }
 
-    private void initInstances() {
-        mRootLayout = (CoordinatorLayout) getActivity().findViewById(R.id.root_layout);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initFragmentInstances();
+    }
 
-        mFabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
-        mFabBtn.setOnClickListener(new View.OnClickListener() {
+    private void initFragmentInstances() {
+        FloatingActionButton fabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
+        fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Snackbar.make(mRootLayout, "I'm just pressing buttons", Snackbar.LENGTH_SHORT)
@@ -75,17 +72,8 @@ public class AboutFragment extends FragmentBase {
             }
         });
 
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
-        mCollapsingToolbarLayout.setTitle(getString(R.string.app_name));
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // Get arguments
-        }
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
+        collapsingToolbarLayout.setTitle(getString(R.string.app_name));
     }
 
     @Override
@@ -93,6 +81,12 @@ public class AboutFragment extends FragmentBase {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about, container, false);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

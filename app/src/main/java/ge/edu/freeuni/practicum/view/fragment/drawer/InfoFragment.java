@@ -3,7 +3,6 @@ package ge.edu.freeuni.practicum.view.fragment.drawer;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -27,11 +26,6 @@ import ge.edu.freeuni.practicum.view.fragment.tab.adapter.TabFragmentAdapter;
  */
 public class InfoFragment extends FragmentBase {
 
-    private CoordinatorLayout mRootLayout;
-    private FloatingActionButton mFabBtn;
-
-    private ViewPager mViewPager;
-
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -52,25 +46,27 @@ public class InfoFragment extends FragmentBase {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        super.initToolbar();
-        initInstances();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /* Do some stuff here */
     }
 
-    private void initInstances() {
-        mRootLayout = (CoordinatorLayout) getActivity().findViewById(R.id.root_layout);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initFragmentInstances();
+    }
 
-        mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
-        if (mViewPager != null) {
-            setupViewPager(mViewPager);
-        }
+    private void initFragmentInstances() {
+        ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
+        if (viewPager != null)
+            setupViewPager(viewPager);
 
         TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setupWithViewPager(viewPager);
 
-        mFabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
-        mFabBtn.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
+        fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Snackbar.make(mRootLayout, "I'm just pressing buttons", Snackbar.LENGTH_SHORT)
@@ -90,13 +86,6 @@ public class InfoFragment extends FragmentBase {
         viewPager.setAdapter(adapter);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // Get arguments
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
