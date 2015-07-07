@@ -16,7 +16,7 @@
     <string name="content_description_nav_header">უნივერსიტეტების ლოგო</string>
     <string name="sample_nav_drawer_user_email">gpetr12@freeuni.edu.ge</string>
     <string name="nav_item_name_main">მთავარი</string>
-    <string name="content_description_toolbar_header">Toolbar header</string>
+    <string name="content_description_toolbar_header">საბანაკო ადგილის სურათი</string>
     <string name="hint_username">e-mail</string>
     <string name="hint_password">პაროლი</string>
     <string name="title_activity_about">ჩვენს შესახებ</string>
