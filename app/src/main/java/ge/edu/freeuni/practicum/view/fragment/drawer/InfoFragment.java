@@ -54,17 +54,21 @@ public class InfoFragment extends FragmentBase {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        iniTabs();
         initFragmentInstances();
     }
 
-    private void initFragmentInstances() {
+    private void iniTabs() {
         ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
-        if (viewPager != null)
-            setupViewPager(viewPager);
+        if (viewPager != null) {
+            TabFragmentAdapter adapter = new TabFragmentAdapter(getChildFragmentManager(), getActivity());
+            viewPager.setAdapter(adapter);
+            TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(viewPager);
+        }
+    }
 
-        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
+    private void initFragmentInstances() {
         FloatingActionButton fabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,12 +84,6 @@ public class InfoFragment extends FragmentBase {
             }
         });
     }
-
-    private void setupViewPager(ViewPager viewPager) {
-        TabFragmentAdapter adapter = new TabFragmentAdapter(getActivity().getSupportFragmentManager(), getActivity());
-        viewPager.setAdapter(adapter);
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
