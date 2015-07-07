@@ -47,17 +47,24 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
+                        menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
+                        selectDrawerItem(menuItem);
                         return true;
                     }
                 });
     }
 
     private void insertInitialFragment() {
+
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
+//
+//        if (menuItem.getItemId() != R.id.nav_item_main)
+//            setTitle(menuItem.getTitle());
+//        else
+//            setTitle(mAppName);
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -94,8 +101,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        menuItem.setChecked(true);
 
         if (menuItem.getItemId() != R.id.nav_item_main)
             setTitle(menuItem.getTitle());

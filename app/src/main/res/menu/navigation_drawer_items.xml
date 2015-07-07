@@ -2,36 +2,38 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:title="">
-            <menu>
-                <item
-                    android:id="@+id/nav_item_main"
-                    android:checked="true"
-                    android:icon="@drawable/ic_receipt_black_48dp"
-                    android:title="@string/nav_item_name_main" />
-                <item
-                    android:id="@+id/nav_item_information"
-                    android:icon="@drawable/ic_info_black_48dp"
-                    android:title="@string/nav_item_name_information" />
-                <item
-                    android:id="@+id/nav_item_change_location"
-                    android:icon="@drawable/ic_terrain_black_48dp"
-                    android:title="@string/nav_item_name_change_location" />
 
-                <item
-                    android:id="@+id/nav_item_notifs"
-                    android:icon="@drawable/ic_notifications_black_48dp"
-                    android:title="@string/nav_item_name_notifs" />
-            </menu>
-        </item>
-        <item android:title="">
-            <menu>
-                <item
-                    android:id="@+id/nav_item_about"
-                    android:icon="@drawable/ic_help_black_48dp"
-                    android:title="@string/nav_item_name_about" />
-            </menu>
-        </item>
+        <item
+            android:id="@+id/nav_item_main"
+            android:checked="true"
+            android:icon="@drawable/ic_receipt_black_48dp"
+            android:title="@string/nav_item_name_main" />
+        <item
+            android:id="@+id/nav_item_information"
+            android:icon="@drawable/ic_info_black_48dp"
+            android:title="@string/nav_item_name_information" />
+        <item
+            android:id="@+id/nav_item_change_location"
+            android:icon="@drawable/ic_terrain_black_48dp"
+            android:title="@string/nav_item_name_change_location" />
+
+        <item
+            android:id="@+id/nav_item_notifs"
+            android:icon="@drawable/ic_notifications_black_48dp"
+            android:title="@string/nav_item_name_notifs" />
+
     </group>
+
+    <item
+        android:id="@+id/nav_group_rem"
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_item_about"
+                android:icon="@drawable/ic_help_black_48dp"
+                android:title="@string/nav_item_name_about" />
+        </menu>
+    </item>
+
 
 </menu>
