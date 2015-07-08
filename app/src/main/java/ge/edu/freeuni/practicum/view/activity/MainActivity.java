@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import ge.edu.freeuni.practicum.R;
@@ -22,7 +24,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private DrawerLayout mDrawerLayout;
     private String mAppName;
+    private static final String SELECTED_MENU_ITEM_ID = "ge.edu.freeuni.practicum.SELECTED_ITEM_ID";
+    private static final String SELECTED_MENU_TITLE = "ge.edu.freeuni.practicum.SELECTED_TITLE";
     private int mCurrMenuItemId;
+    private String mCurrMenuItemTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +35,21 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         setContentView(R.layout.activity_main);
 
         initInstances();
-        insertInitialFragment();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mCurrMenuItemId = savedInstanceState.getInt(SELECTED_MENU_ITEM_ID, R.id.nav_item_main);
+        mCurrMenuItemTitle = savedInstanceState.getString(SELECTED_MENU_TITLE, mAppName);
     }
 
     private void initInstances() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        if (navigationView != null) {
+        if (navigationView != null)
             setupDrawerContent(navigationView);
-        }
 
         mAppName = getString(R.string.app_name);
     }
@@ -63,10 +73,54 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 });
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        insertInitialFragment();
+    }
+
     private void insertInitialFragment() {
         // Insert the fragment by replacing any existing fragment
+        Fragment fragment = null;
+
+        Class fragmentClass;
+        switch (mCurrMenuItemId) {
+            case R.id.nav_item_main:
+                fragmentClass = MainFragment.class;
+                break;
+            case R.id.nav_item_information:
+                fragmentClass = InfoFragment.class;
+                break;
+            case R.id.nav_item_change_location:
+                fragmentClass = ExchangeFragment.class;
+                break;
+            case R.id.nav_item_notifs:
+                fragmentClass = NotificationsFragment.class;
+                break;
+            default:
+                fragmentClass = MainFragment.class;
+                mCurrMenuItemTitle = mAppName;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (fragment == null)
+            return;
+
+        // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+        Log.d("onRestoreInstanceState", "" + mAppName + " " + mCurrMenuItemTitle);
+
+        if (mCurrMenuItemId == R.id.nav_item_main)
+            setTitle(mAppName);
+        else
+            setTitle(mCurrMenuItemTitle);
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -113,6 +167,14 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             setTitle(mAppName);
 
         mCurrMenuItemId = menuItem.getItemId();
+        mCurrMenuItemTitle = menuItem.getTitle().toString();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SELECTED_MENU_ITEM_ID, mCurrMenuItemId);
+        outState.putString(SELECTED_MENU_TITLE, mCurrMenuItemTitle);
     }
 
     @Override
