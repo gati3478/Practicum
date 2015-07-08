@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private DrawerLayout mDrawerLayout;
     private String mAppName;
+    private int mCurrMenuItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
+        if (menuItem.getItemId() == mCurrMenuItemId)
+            return;
+        
         Fragment fragment = null;
 
         Class fragmentClass;
@@ -107,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             setTitle(menuItem.getTitle());
         else
             setTitle(mAppName);
+
+        mCurrMenuItemId = menuItem.getItemId();
     }
 
     @Override
