@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public void selectDrawerItem(MenuItem menuItem) {
         if (menuItem.getItemId() == mCurrMenuItemId)
             return;
-        
+
         Fragment fragment = null;
 
         Class fragmentClass;
