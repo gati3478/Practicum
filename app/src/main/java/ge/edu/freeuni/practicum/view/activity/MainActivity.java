@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import ge.edu.freeuni.practicum.R;
@@ -114,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        Log.d("onRestoreInstanceState", "" + mAppName + " " + mCurrMenuItemTitle);
 
         if (mCurrMenuItemId == R.id.nav_item_main)
             setTitle(mAppName);
