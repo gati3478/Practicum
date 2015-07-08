@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import ge.edu.freeuni.practicum.R;
@@ -22,11 +23,10 @@ import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionList
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
     private DrawerLayout mDrawerLayout;
+    private Menu mMenu;
     private String mAppName;
     private static final String SELECTED_MENU_ITEM_ID = "ge.edu.freeuni.practicum.SELECTED_ITEM_ID";
-    private static final String SELECTED_MENU_TITLE = "ge.edu.freeuni.practicum.SELECTED_TITLE";
     private int mCurrMenuItemId;
-    private String mCurrMenuItemTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mCurrMenuItemId = savedInstanceState.getInt(SELECTED_MENU_ITEM_ID, R.id.nav_item_main);
-        mCurrMenuItemTitle = savedInstanceState.getString(SELECTED_MENU_TITLE, mAppName);
     }
 
     private void initInstances() {
@@ -70,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                         return true;
                     }
                 });
+        mMenu = navigationView.getMenu();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 break;
             default:
                 fragmentClass = MainFragment.class;
-                mCurrMenuItemTitle = mAppName;
+                mCurrMenuItemId = R.id.nav_item_main;
         }
 
         try {
@@ -114,10 +114,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
+        MenuItem menuItem = mMenu.findItem(mCurrMenuItemId);
         if (mCurrMenuItemId == R.id.nav_item_main)
             setTitle(mAppName);
         else
-            setTitle(mCurrMenuItemTitle);
+            setTitle(menuItem.getTitle());
+        menuItem.setChecked(true);
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -164,14 +166,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             setTitle(mAppName);
 
         mCurrMenuItemId = menuItem.getItemId();
-        mCurrMenuItemTitle = menuItem.getTitle().toString();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SELECTED_MENU_ITEM_ID, mCurrMenuItemId);
-        outState.putString(SELECTED_MENU_TITLE, mCurrMenuItemTitle);
     }
 
     @Override
