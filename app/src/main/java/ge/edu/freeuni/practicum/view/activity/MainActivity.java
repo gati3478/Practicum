@@ -3,6 +3,7 @@ package ge.edu.freeuni.practicum.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -49,22 +50,22 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
-                        selectDrawerItem(menuItem);
+                        final MenuItem fItem = menuItem;
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                selectDrawerItem(fItem);
+                            }
+                        }, 200);
                         return true;
                     }
                 });
     }
 
     private void insertInitialFragment() {
-
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
-//
-//        if (menuItem.getItemId() != R.id.nav_item_main)
-//            setTitle(menuItem.getTitle());
-//        else
-//            setTitle(mAppName);
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
