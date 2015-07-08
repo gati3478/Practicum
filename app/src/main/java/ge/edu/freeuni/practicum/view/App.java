@@ -10,10 +10,9 @@ import com.parse.ParseException;
 import java.util.HashMap;
 
 /**
- *
- * Created by Giorgi on 7/7/2015.
+ * Application class.
  */
-public class App extends Application{
+public class App extends Application {
 
     @Override
     public void onCreate() {
@@ -32,4 +31,5 @@ public class App extends Application{
             }
         });
     }
+
 }
