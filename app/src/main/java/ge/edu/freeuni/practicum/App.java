@@ -1,6 +1,7 @@
 package ge.edu.freeuni.practicum;
 
 import android.app.Application;
+
 import com.parse.Parse;
 
 /**
@@ -16,4 +17,5 @@ public class App extends Application {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, getResources().getString(R.string.app_id), getResources().getString(R.string.client_key));
     }
+
 }
