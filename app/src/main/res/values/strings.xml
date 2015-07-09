@@ -18,9 +18,12 @@
     <string name="title_activity_about">ჩვენს შესახებ</string>
     <string name="about_us_title">ჩვენ შესახებ</string>
     <string name="description_app_logo">აპლიკაციის ლოგო</string>
-    <string name="main_frag_student_desc">სტუდენტი</string>
-    <string name="main_frag_loc_desc">საველე პრაქტიკის ლოკაცია</string>
+    <string name="student_desc">სტუდენტი</string>
+    <string name="location_desc">საველე პრაქტიკის ლოკაცია</string>
     <string name="default_student_name">გია ბაჯვახი</string>
     <string name="default_student_location">გორი</string>
-    <string name="main_frag_wave_desc">ნაკადი</string>
+    <string name="wave_desc">ნაკადი</string>
+    <string name="departure_date_title">გასვლის თარიღი</string>
+    <string name="group_leader_title">კოორდინატორი</string>
+    <string name="default_group_leader_name">იაგო ჯაფარი</string>
 </resources>

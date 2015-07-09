@@ -3,8 +3,6 @@ package ge.edu.freeuni.practicum.view.fragment.drawer;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -69,20 +67,7 @@ public class InfoFragment extends FragmentBase {
     }
 
     private void initFragmentInstances() {
-        FloatingActionButton fabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
-        fabBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(mRootLayout, "I'm just pressing buttons", Snackbar.LENGTH_SHORT)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        })
-                        .show();
-            }
-        });
+        /* Empty */
     }
 
     @Override
