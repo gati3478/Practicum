@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -250,16 +249,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     //Checks for specified email. If the email exists calls login()
     //otherwise notifies the user about the incorrect email
-    private void checkForEmail(final String email, final String password){
+    private void checkForEmail(final String email, final String password) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("username", email);
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-                    if (objects.isEmpty()){
+                    if (objects.isEmpty()) {
                         mEmailView.setError(getString(R.string.error_invalid_email));
                         mEmailView.requestFocus();
-                    }else {
+                    } else {
                         login(email, password);
                     }
                 } else {
@@ -273,7 +272,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     //Tries to login a user after the user has passed the validation check for email and password
     //If the user logged in successfully, downloads additional information about the user
-    private void login(final String email, String password){
+    private void login(final String email, String password) {
 
         ParseUser.logInInBackground(email, password, new LogInCallback() {
             @Override
@@ -290,7 +289,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     //downloads additional information about the user
-    private void getUserInfo(String email){
+    private void getUserInfo(String email) {
         final LoginActivity loginActivity = this;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserInfo");
         query.whereEqualTo("userName", email);

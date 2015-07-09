@@ -179,4 +179,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         //
     }
 
+    @Override
+    public void onBackPressed() {
+        /* Overriding so MainActivity won't go back to login screen */
+    }
+
 }
