@@ -1,4 +1,4 @@
-package ge.edu.freeuni.practicum.view.model;
+package ge.edu.freeuni.practicum.model;
 
 /**
  * Model class for location

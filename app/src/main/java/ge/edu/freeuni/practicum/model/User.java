@@ -1,12 +1,16 @@
-package ge.edu.freeuni.practicum.view.model;
+package ge.edu.freeuni.practicum.model;
+
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
 
 import java.util.List;
 
 /**
- * Model class for user
+ * Data model fot user
  * Created by Giorgi on 7/7/2015.
  */
-public class User {
+//@ParseClassName("")
+public class User extends ParseObject{
 
     private String firstName, lastName, email, password;
     private Location currentLocation;
