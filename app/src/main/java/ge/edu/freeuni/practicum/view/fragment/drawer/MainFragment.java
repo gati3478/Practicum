@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ge.edu.freeuni.practicum.R;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
@@ -69,6 +70,15 @@ public class MainFragment extends FragmentBase {
                         .show();
             }
         });
+
+        TextView studentName = (TextView) mRootLayout.findViewById(R.id.text_view_student_name);
+        studentName.setText(getString(R.string.default_student_name));
+
+        TextView location = (TextView) mRootLayout.findViewById(R.id.text_view_assigned_location);
+        location.setText(getString(R.string.default_student_location));
+
+        TextView waveNum = (TextView) mRootLayout.findViewById(R.id.text_view_wave_num);
+        waveNum.setText("II");
     }
 
     @Override
