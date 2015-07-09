@@ -1,0 +1,9 @@
+<resources>
+    <!-- Strings related to login -->
+    <string name="about_app_title">აპლიკაცია</string>
+    <string name="about_app_us">ჩვენ</string>
+    <string name="about_app_gkink12">გიორგი ქინქლაძე</string>
+    <string name="about_app_gpetr12">გათი პეტრიაშვილი</string>
+    <string name="logo_click_msg_1">ხელი აიღე იაშა ბიძია</string>
+    <string name="logo_click_msg_2">აპ-აპპ-აპაპაპა-აპ</string>
+</resources>
