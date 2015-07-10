@@ -16,4 +16,6 @@
     <dimen name="card_margin">16dp</dimen>
     <dimen name="about_us_margin_top">24dp</dimen>
     <dimen name="about_us_info_text_margin_top">8dp</dimen>
+
+    <dimen name="sign_in_button_margin">30dp</dimen>
 </resources>
