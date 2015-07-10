@@ -62,6 +62,7 @@ public class InfoFragment extends FragmentBase {
             TabFragmentAdapter adapter = new TabFragmentAdapter(getChildFragmentManager(), getActivity());
             viewPager.setAdapter(adapter);
             TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
             tabLayout.setupWithViewPager(viewPager);
         }
     }
