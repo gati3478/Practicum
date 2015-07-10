@@ -46,8 +46,23 @@ public class BasicInfoFragment extends Fragment {
         TextView waveNum = (TextView) view.findViewById(R.id.text_view_wave_num);
         waveNum.setText("II");
 
+        TextView groupSize = (TextView) view.findViewById(R.id.text_view_group_size);
+        groupSize.setText("" + 20);
+
         TextView departDate = (TextView) view.findViewById(R.id.text_view_departure_date);
         departDate.setText("28 ივლისი, 8:32 AM");
+
+        TextView flatSurface = (TextView) view.findViewById(R.id.text_view_flat_surface);
+        flatSurface.setText(getString(R.string.affirmative_exists));
+
+        TextView lavatory = (TextView) view.findViewById(R.id.text_view_lavatory);
+        lavatory.setText(getString(R.string.negative_not_exists));
+
+        TextView shower = (TextView) view.findViewById(R.id.text_view_shower);
+        shower.setText(getString(R.string.negative_not_exists));
+
+        TextView averageTemp = (TextView) view.findViewById(R.id.text_view_average_temperature);
+        averageTemp.setText("28-30 C");
 
         TextView leaderName = (TextView) view.findViewById(R.id.text_view_grou_leader_name);
         leaderName.setText(getString(R.string.default_group_leader_name));
@@ -57,6 +72,9 @@ public class BasicInfoFragment extends Fragment {
 
         TextView leaderPhone = (TextView) view.findViewById(R.id.text_view_leader_phone_num);
         leaderPhone.setText(Html.fromHtml("<a href=\"tel:595473533\">595 47 35 33</a>"));
+
+        TextView additionalNotes = (TextView) view.findViewById(R.id.text_view_additional_notes);
+        additionalNotes.setText(getString(R.string.no_additional_notes));
 
         return view;
     }
