@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ge.edu.freeuni.practicum.R;
 
@@ -33,7 +34,12 @@ public class InventoryInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inventory_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_inventory_info, container, false);
+
+        TextView groupSize = (TextView) view.findViewById(R.id.text_view_inventory_info);
+        groupSize.setText(getString(R.string.default_inventory));
+
+        return view;
     }
 
 }

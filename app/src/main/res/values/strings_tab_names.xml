@@ -4,5 +4,7 @@
         <item>ზოგადი</item>
         <item>ჯგუფი</item>
         <item>ინვენტარი</item>
+        <!-- Might be added in the future -->
+        <item>გეგმა</item>
     </string-array>
 </resources>
