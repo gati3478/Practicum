@@ -59,13 +59,15 @@ public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<Notif
     public void onBindViewHolder(NotificationsRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.mTextViewLoc.setText(mPlaces[position]);
 
-        if (position % 4 == 0)
+        if (position % 4 == 0) {
             holder.mTextViewWave.setText("ნაკადი III");
-        else if (position % 4 == 2)
+            holder.mImageView.setImageResource(R.drawable.ic_cycle_off);
+        } else if (position % 4 == 2) {
             holder.mTextViewWave.setText("ნაკადი I");
-        else {
-            holder.mTextViewWave.setText("ნაკადი II");
             holder.mImageView.setImageResource(R.drawable.ic_cycle_on);
+        } else {
+            holder.mTextViewWave.setText("ნაკადი II");
+            holder.mImageView.setImageResource(R.drawable.ic_cycle_off);
         }
 
         final View view = holder.mView;
