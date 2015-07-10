@@ -1,5 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bright_foreground_inverse_material_light"
@@ -12,43 +13,47 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ge.edu.freeuni.practicum.view.activity.LoginActivity">
 
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/description_nav_header"
-        android:src="@drawable/nav_header_bg" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:text="@string/welcome_text_desc"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:background="@color/bright_foreground_inverse_material_light"
+        android:fitsSystemWindows="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/welcome_text_desc_2"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        <!-- Login progress -->
+        <ProgressBar
+            android:id="@+id/login_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone" />
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_nav_header"
+            android:src="@drawable/nav_header_bg" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/welcome_text_desc"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/welcome_text_desc_2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -65,6 +70,6 @@
                 android:layout_margin="@dimen/sign_in_button_margin" />
 
         </LinearLayout>
-    </ScrollView>
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
