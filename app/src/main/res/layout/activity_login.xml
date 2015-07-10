@@ -27,6 +27,24 @@
         android:contentDescription="@string/description_nav_header"
         android:src="@drawable/nav_header_bg" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="@string/welcome_text_desc"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/welcome_text_desc_2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -36,12 +54,12 @@
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/sign_in_button_margin" />

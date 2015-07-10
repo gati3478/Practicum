@@ -3,22 +3,20 @@ package ge.edu.freeuni.practicum.view.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
@@ -29,15 +27,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ge.edu.freeuni.practicum.R;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>,
+public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -67,7 +62,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
                 .build();
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
+        setGooglePlusButtonText(signInButton, getString(R.string.action_sign_in));
+        signInButton.setOnClickListener(this);
+    }
+
+    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+            if (v instanceof TextView) {
+                TextView mTextView = (TextView) v;
+                mTextView.setText(buttonText);
+                mTextView.setGravity(Gravity.CENTER);
+                return;
+            }
+        }
     }
 
     @Override
@@ -93,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         /* Showing basic hint fore demo */
         String hintToast = getString(R.string.hint_login_toast);
-        Toast.makeText(this, hintToast, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, hintToast, Toast.LENGTH_LONG).show();
     }
 
     private boolean isEmailValid(String email) {
@@ -134,40 +145,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ? AND (" + ContactsContract.CommonDataKinds.Email.DATA + " LIKE ? OR "
-                        + ContactsContract.CommonDataKinds.Email.DATA + " LIKE ?)",
-                new String[]{ContactsContract.CommonDataKinds.Email
-                        .CONTENT_ITEM_TYPE, "%@freeuni.edu.ge%", "%agruni.edu.ge%"},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
     }
 
     //generates a password from an email

@@ -9,4 +9,6 @@
     <string name="affirmative_exists">არის</string>
     <string name="negative_not_exists">არ არის</string>
     <string name="no_additional_notes">არაფერი</string>
+    <string name="welcome_text_desc">საველე პრაქტიკა I</string>
+    <string name="welcome_text_desc_2">დამხმარე აპლიკაცია</string>
 </resources>
