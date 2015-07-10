@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:gravity="start"
-                    android:text="@string/student_desc"
+                    android:text="@string/student_desc_title"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:gravity="start"
-                    android:text="@string/location_desc"
+                    android:text="@string/location_desc_title"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:gravity="start"
-                    android:text="@string/wave_desc"
+                    android:text="@string/wave_desc_title"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView

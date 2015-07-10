@@ -1,0 +1,7 @@
+<resources>
+    <string name="drawer_close">უჯრის დახურვა</string>
+    <string name="drawer_open">უჯრის გახსნა</string>
+    <string name="description_nav_header">უნივერსიტეტების ლოგო</string>
+    <string name="description_toolbar_header">საბანაკო ადგილის სურათი</string>
+    <string name="description_app_logo">აპლიკაციის ლოგო</string>
+</resources>

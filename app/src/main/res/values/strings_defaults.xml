@@ -1,4 +1,8 @@
 <resources>
+    <string name="sample_nav_drawer_user_email">gpetr12@freeuni.edu.ge</string>
+    <string name="default_student_name">გია ბაჯვახი</string>
+    <string name="default_student_location">ლაგოდეხის დაცული ტერიტორიები (ადმინისტრაციის ეზო, ადმინიტრაციის უკან)</string>
+    <string name="default_group_leader_name">იაგო ჯაფარი</string>
     <string name="default_inventory">
         ფანარი, თავისი ელემენტებით, თუმცა კარავზე ერთ ფანარს გატანთ უნივერსიტეტი.\n\n
         საძილე ტომარა ან მისი შემცვლელი. საძილე ტომრის ყიდვისას, გაითვალისწინეთ პრაქტიკის დანიშნულების ადგილზე არსებული საშუალო ტემპერატურა. ქვეშსაგები შეიძინა უნივერსიტეტმა ყველა სტუდენტისთვის.\n\n
