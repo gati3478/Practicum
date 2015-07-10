@@ -4,4 +4,6 @@
     <string name="description_nav_header">უნივერსიტეტების ლოგო</string>
     <string name="description_toolbar_header">საბანაკო ადგილის სურათი</string>
     <string name="description_app_logo">აპლიკაციის ლოგო</string>
+    <string name="description_tent_logo">კარვის გამომსახველი სიმბოლო</string>
+    <string name="description_options_icon">ქმედებათა საჩვენებელი ხატულა</string>
 </resources>

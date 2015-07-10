@@ -3,14 +3,15 @@ package ge.edu.freeuni.practicum.view.fragment.drawer;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.adapter.NotificationsRecyclerViewAdapter;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
 
 /**
@@ -22,6 +23,8 @@ import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionList
  * create an instance of this fragment.
  */
 public class NotificationsFragment extends FragmentBase {
+
+    private RecyclerView mRecyclerView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,30 +55,22 @@ public class NotificationsFragment extends FragmentBase {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initFragmentInstances();
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        mRecyclerView.setAdapter(new NotificationsRecyclerViewAdapter(getActivity()));
     }
 
     private void initFragmentInstances() {
-        FloatingActionButton fabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
-        fabBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(mRootLayout, "I'm just pressing buttons", Snackbar.LENGTH_SHORT)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        })
-                        .show();
-            }
-        });
+        /* Empty for now */
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications, container, false);
+        View view = inflater.inflate(R.layout.fragment_notifications, container, false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

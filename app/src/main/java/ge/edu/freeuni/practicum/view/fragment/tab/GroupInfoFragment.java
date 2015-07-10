@@ -18,6 +18,8 @@ import ge.edu.freeuni.practicum.view.adapter.SimpleGroupRecyclerViewAdapter;
  */
 public class GroupInfoFragment extends Fragment {
 
+    private RecyclerView mRecyclerView;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -33,12 +35,17 @@ public class GroupInfoFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setupRecyclerView(mRecyclerView);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        RecyclerView rv = (RecyclerView) inflater.inflate(R.layout.fragment_group_info, container, false);
-        setupRecyclerView(rv);
-        return rv;
+        mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_group_info, container, false);
+        return mRecyclerView;
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {

@@ -50,4 +50,16 @@
         <item>ანიტა პერიტა</item>
         <item>აი ის</item>
     </string-array>
+    <string-array name="default_exchange_queries">
+        <item>ლაგოდეხი</item>
+        <item>მტირალა</item>
+        <item>თუშეთი</item>
+        <item>ულან-ბატორი</item>
+        <item>ჰაბსენდი</item>
+        <item>თბილისი</item>
+        <item>ნიდერლანდები</item>
+        <item>გასტროლები</item>
+        <item>გია</item>
+        <item>მეორე გია</item>
+    </string-array>
 </resources>
