@@ -1,4 +1,4 @@
-package ge.edu.freeuni.practicum.view.fragment.tab.adapter;
+package ge.edu.freeuni.practicum.view.adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -13,11 +13,11 @@ import ge.edu.freeuni.practicum.view.fragment.tab.InventoryInfoFragment;
 /**
  * Adapter for tabs.
  */
-public class TabFragmentAdapter extends FragmentPagerAdapter {
+public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private String tab_names[];
 
-    public TabFragmentAdapter(FragmentManager fm, Context context) {
+    public TabFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         tab_names = context.getResources().getStringArray(R.array.tab_names);
     }

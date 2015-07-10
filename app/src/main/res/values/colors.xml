@@ -3,4 +3,8 @@
     <color name="nav_item_icon_tint_color">#388E3C</color>
     <color name="nav_item_text_color">#333</color>
     <color name="window_background">#FFF5F5F5</color>
+    <color name="amber500">#FFC107</color>
+    <color name="amber700">#FFA000</color>
+    <color name="lightGreen500">#8BC34A</color>
+    <color name="lightGreen700">#689F38</color>
 </resources>

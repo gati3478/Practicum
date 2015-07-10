@@ -2,11 +2,14 @@ package ge.edu.freeuni.practicum.view.fragment.tab;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.adapter.SimpleGroupRecyclerViewAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +36,15 @@ public class GroupInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_group_info, container, false);
+        RecyclerView rv = (RecyclerView) inflater.inflate(R.layout.fragment_group_info, container, false);
+        setupRecyclerView(rv);
+        return rv;
+    }
+
+    private void setupRecyclerView(RecyclerView recyclerView) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        String[] names = getResources().getStringArray(R.array.default_group_members);
+        recyclerView.setAdapter(new SimpleGroupRecyclerViewAdapter(names));
     }
 
 }

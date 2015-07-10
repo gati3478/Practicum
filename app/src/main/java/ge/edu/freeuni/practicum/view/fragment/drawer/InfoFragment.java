@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.adapter.TabFragmentPagerAdapter;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
-import ge.edu.freeuni.practicum.view.fragment.tab.adapter.TabFragmentAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +59,7 @@ public class InfoFragment extends FragmentBase {
     private void iniTabs() {
         ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
         if (viewPager != null) {
-            TabFragmentAdapter adapter = new TabFragmentAdapter(getChildFragmentManager(), getActivity());
+            TabFragmentPagerAdapter adapter = new TabFragmentPagerAdapter(getChildFragmentManager(), getActivity());
             viewPager.setAdapter(adapter);
             TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
