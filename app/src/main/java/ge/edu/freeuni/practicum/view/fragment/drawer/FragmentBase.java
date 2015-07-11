@@ -1,5 +1,6 @@
 package ge.edu.freeuni.practicum.view.fragment.drawer;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.activity.LoginActivity;
 
 /**
  * Base fragment for drawer fragments
@@ -79,6 +81,8 @@ public abstract class FragmentBase extends Fragment {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_sign_out:
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
                 return true;
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
