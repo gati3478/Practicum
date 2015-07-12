@@ -13,13 +13,12 @@
         android:src="@drawable/nav_header_bg" />
 
     <TextView
-        android:id="@+id/email_student"
+        android:id="@+id/name_student"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
-        android:gravity="center_horizontal"
-        android:text="@string/sample_nav_drawer_user_email"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:textColor="@color/primary_text_default_material_light" />
 
 </LinearLayout>

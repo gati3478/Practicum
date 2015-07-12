@@ -96,6 +96,7 @@ public class MainFragment extends FragmentBase {
     private void showLoginScreen() {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
     // converts arabic numerals to roman

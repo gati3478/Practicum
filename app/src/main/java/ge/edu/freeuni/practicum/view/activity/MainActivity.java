@@ -12,6 +12,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.parse.ParseUser;
 
 import ge.edu.freeuni.practicum.R;
 import ge.edu.freeuni.practicum.view.fragment.drawer.ExchangeFragment;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         setContentView(R.layout.activity_main);
 
         initInstances();
+        setOnDrawerStudentName();
     }
 
     @Override
@@ -70,6 +74,26 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     }
                 });
         mMenu = navigationView.getMenu();
+    }
+
+    private void setOnDrawerStudentName() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)
+            showLoginScreen();
+
+        TextView userFullName = (TextView) mDrawerLayout.findViewById(R.id.name_student);
+
+        String firstName = currentUser.getString("firstName");
+        String lastName = currentUser.getString("lastName");
+
+        if (firstName != null && lastName != null)
+            userFullName.setText(firstName + " " + lastName);
+    }
+
+    private void showLoginScreen() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
