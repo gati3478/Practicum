@@ -28,6 +28,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.dialog.InvalidEmailDialog;
 
 /**
  * A login screen that offers login via email/password.
@@ -160,9 +161,6 @@ public class LoginActivity extends AppCompatActivity implements
         // establish a service connection to Google Play services.
         mShouldResolve = false;
 
-        // Show the signed-in UI
-        System.out.println(Plus.AccountApi.getAccountName(mGoogleApiClient));//TODO wasashlelia
-
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         showProgress(true);
@@ -258,7 +256,8 @@ public class LoginActivity extends AppCompatActivity implements
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     showProgress(false);
-                    //TODO no such email exists
+                    InvalidEmailDialog noSuchEmail = new InvalidEmailDialog();
+                    noSuchEmail.show(getSupportFragmentManager(), "noSuchEmailDialog");
                 } else {
                     getUserInfo(email);
                 }

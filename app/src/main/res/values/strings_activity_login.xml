@@ -2,15 +2,12 @@
     <string name="title_activity_login">შესვლა</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">e-mail</string>
-    <string name="prompt_password">პაროლი</string>
     <string name="action_sign_in">შესვლა</string>
     <string name="action_sign_in_short">შესვლა</string>
 
-    <string name="error_invalid_email">e-mail არასწორია</string>
-    <string name="error_invalid_password">პაროლი მოკლეა</string>
-    <string name="error_incorrect_password">პაროლი არასწორია</string>
-    <string name="error_field_required">ამ ველის შევსება აუცილებელია</string>
+    <string name="error_invalid_email">სისტემაში შესასვლელად გამოიყენეთ თქვენი საუნივერსიტეტო Email</string>
 
     <string name="hint_login_toast">გამოიყენეთ თქვენი საუნივერსიტეტო Email</string>
+
+    <string name="actioin_got_it">გასაგებია</string>
 </resources>
