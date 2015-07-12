@@ -1,5 +1,6 @@
 package ge.edu.freeuni.practicum.view.fragment.tab;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -8,7 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.CountCallback;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
+
+import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.activity.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +35,7 @@ public class BasicInfoFragment extends Fragment {
      *
      * @return A new instance of fragment BasicInfoFragment.
      */
+
     public static BasicInfoFragment newInstance() {
         return new BasicInfoFragment();
     }
@@ -31,26 +44,85 @@ public class BasicInfoFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //shows LoginActivity
+    private void showLoginScreen() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    // converts arabic numerals to roman
+    private String arabicToRoman(int arabic) {
+        switch (arabic) {
+            case 1:
+                return "I";
+            case 2:
+                return "II";
+            case 3:
+                return "III";
+            case 4:
+                return "IV";
+            case 5:
+                return "V";
+            default:
+                return "VI";
+        }
+    }
+
+    //displays number of students in a location
+    private void numberOfStudents(final View view){
+        final TextView groupSize = (TextView) view.findViewById(R.id.text_view_group_size);
+
+        ParseQuery innerQuery = new ParseQuery("Location");
+        innerQuery.whereEqualTo("objectId", ((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getObjectId());
+
+        if (((App) getActivity().getApplication()).getNumberOfStudents() == -1) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("UserInfo");
+            query.whereMatchesQuery("currentLocation", innerQuery);
+            query.countInBackground(new CountCallback() {
+                public void done(int count, ParseException e) {
+                    if (e == null) {
+                        ((App) getActivity().getApplication()).setNumberOfStudents(count);
+                        groupSize.setText("" + count);
+                    } else {
+                        // The request failed
+                    }
+                }
+            });
+        }else{
+            groupSize.setText("" + ((App) getActivity().getApplication()).getNumberOfStudents());
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_basic_info, container, false);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null) {
+            showLoginScreen();
+        }
+
+        String firstName = currentUser.getString("firstName");
+        String lastName = currentUser.getString("lastName");
 
         TextView studentName = (TextView) view.findViewById(R.id.text_view_student_name);
-        studentName.setText(getString(R.string.default_student_name));
+
+        //to avoid null-pointer exception
+        if (firstName != null && lastName != null)
+            studentName.setText(firstName + " " + lastName);
 
         TextView location = (TextView) view.findViewById(R.id.text_view_assigned_location);
-        location.setText(getString(R.string.default_student_location));
+        location.setText(((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getName());
 
         TextView waveNum = (TextView) view.findViewById(R.id.text_view_wave_num);
-        waveNum.setText("II");
+        int wave = ((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getWave();
+        waveNum.setText(arabicToRoman(wave));
 
-        TextView groupSize = (TextView) view.findViewById(R.id.text_view_group_size);
-        groupSize.setText("" + 20);
+        numberOfStudents(view);
 
         TextView departDate = (TextView) view.findViewById(R.id.text_view_departure_date);
-        departDate.setText("28 ივლისი, 8:32 AM");
+        departDate.setText(((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getDate());
 
         TextView flatSurface = (TextView) view.findViewById(R.id.text_view_flat_surface);
         flatSurface.setText(getString(R.string.affirmative_exists));

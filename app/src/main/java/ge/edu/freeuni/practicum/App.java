@@ -24,11 +24,13 @@ import ge.edu.freeuni.practicum.model.UserInfo;
 public class App extends Application {
 
     private UserInfo mUserInfo;
+    private int mNumberOfStudentsInLocation;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        mNumberOfStudentsInLocation = -1;
         //register subclasses
         ParseObject.registerSubclass(UserInfo.class);
         ParseObject.registerSubclass(Location.class);
@@ -59,6 +61,16 @@ public class App extends Application {
 
     public UserInfo getUserInfo(){
         return mUserInfo;
+    }
+
+    //sets number of students in the user's current location
+    public void setNumberOfStudents(int numberOfStudents){
+        mNumberOfStudentsInLocation = numberOfStudents;
+    }
+
+    //returns number of students in the user's current location
+    public int getNumberOfStudents(){
+        return mNumberOfStudentsInLocation;
     }
 
 }
