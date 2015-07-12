@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.parse.ParseUser;
+
 import ge.edu.freeuni.practicum.R;
 import ge.edu.freeuni.practicum.view.activity.LoginActivity;
 
@@ -81,6 +83,7 @@ public abstract class FragmentBase extends Fragment {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_sign_out:
+                ParseUser.logOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 return true;
@@ -97,5 +100,4 @@ public abstract class FragmentBase extends Fragment {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
 }
