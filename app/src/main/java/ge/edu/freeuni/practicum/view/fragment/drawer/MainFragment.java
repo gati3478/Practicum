@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,21 +59,6 @@ public class MainFragment extends FragmentBase {
     }
 
     private void initFragmentInstances() {
-        FloatingActionButton fabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
-        fabBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(mRootLayout, "I'm just pressing buttons", Snackbar.LENGTH_SHORT)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        })
-                        .show();
-            }
-        });
-
         setTextsOnTextViews();
     }
 
@@ -110,14 +93,14 @@ public class MainFragment extends FragmentBase {
         mListener = null;
     }
 
-    private void showLoginScreen(){
+    private void showLoginScreen() {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
     }
 
-    //converts arabic numerals to roman
-    private String arabicToRoman(int arabic){
-        switch (arabic){
+    // converts arabic numerals to roman
+    private String arabicToRoman(int arabic) {
+        switch (arabic) {
             case 1:
                 return "I";
             case 2:
@@ -133,9 +116,8 @@ public class MainFragment extends FragmentBase {
         }
     }
 
-    //sets texts to the variable text fields
-    private void setTextsOnTextViews(){
-
+    // sets texts to the variable text fields
+    private void setTextsOnTextViews() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null) {
             showLoginScreen();
@@ -152,7 +134,7 @@ public class MainFragment extends FragmentBase {
         location.setText(((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getName());
 
         TextView waveNum = (TextView) mRootLayout.findViewById(R.id.text_view_wave_num);
-        int wave = ((App)getActivity().getApplication()).getUserInfo().getCurrentLocation().getWave();
+        int wave = ((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getWave();
         waveNum.setText(arabicToRoman(wave));
     }
 

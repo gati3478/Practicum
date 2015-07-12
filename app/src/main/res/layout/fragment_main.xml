@@ -93,16 +93,4 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/fab_margin_bottom"
-        android:layout_marginEnd="@dimen/fab_margin_right"
-        android:layout_marginRight="@dimen/fab_margin_right"
-        android:src="@drawable/ic_plus"
-        app:borderWidth="0dp"
-        app:fabSize="normal" />
-
 </android.support.design.widget.CoordinatorLayout>

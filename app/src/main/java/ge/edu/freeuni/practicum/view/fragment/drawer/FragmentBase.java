@@ -86,6 +86,7 @@ public abstract class FragmentBase extends Fragment {
                 ParseUser.logOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+                getActivity().finish();
                 return true;
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);

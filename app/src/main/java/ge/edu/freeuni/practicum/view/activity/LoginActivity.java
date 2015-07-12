@@ -23,13 +23,11 @@ import com.google.android.gms.plus.Plus;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
-import ge.edu.freeuni.practicum.model.Location;
 import ge.edu.freeuni.practicum.model.UserInfo;
 import ge.edu.freeuni.practicum.view.dialog.InvalidEmailDialog;
 
@@ -283,7 +281,7 @@ public class LoginActivity extends AppCompatActivity implements
                 } else {
 
                     //sets additional user info in app class to be retrieved by another activities
-                    ((App)getApplication()).setUserInfo(object);
+                    ((App) getApplication()).setUserInfo(object);
 
                     //starts MainActivity
                     Intent intent = new Intent(loginActivity, MainActivity.class);
@@ -293,11 +291,6 @@ public class LoginActivity extends AppCompatActivity implements
                 finish();
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        /* Overriding so login screen won't go back to MainActivity */
     }
 
 }
