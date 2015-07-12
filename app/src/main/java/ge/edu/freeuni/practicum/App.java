@@ -6,6 +6,7 @@ import com.parse.FunctionCallback;
 import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,14 +15,23 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ge.edu.freeuni.practicum.model.Location;
+import ge.edu.freeuni.practicum.model.UserInfo;
+
 /**
  * Application class.
  */
 public class App extends Application {
 
+    private UserInfo mUserInfo;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //register subclasses
+        ParseObject.registerSubclass(UserInfo.class);
+        ParseObject.registerSubclass(Location.class);
 
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
@@ -41,6 +51,14 @@ public class App extends Application {
                 }
             }
         });
+    }
+
+    public void setUserInfo(UserInfo userInfo){
+        mUserInfo = userInfo;
+    }
+
+    public UserInfo getUserInfo(){
+        return mUserInfo;
     }
 
 }

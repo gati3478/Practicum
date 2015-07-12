@@ -1,6 +1,7 @@
 package ge.edu.freeuni.practicum.view.fragment.drawer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,7 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.ParseUser;
+
+import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.activity.LoginActivity;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
 
 /**
@@ -71,14 +76,7 @@ public class MainFragment extends FragmentBase {
             }
         });
 
-        TextView studentName = (TextView) mRootLayout.findViewById(R.id.text_view_student_name);
-        studentName.setText(getString(R.string.default_student_name));
-
-        TextView location = (TextView) mRootLayout.findViewById(R.id.text_view_assigned_location);
-        location.setText(getString(R.string.default_student_location));
-
-        TextView waveNum = (TextView) mRootLayout.findViewById(R.id.text_view_wave_num);
-        waveNum.setText("II");
+        setTextsOnTextViews();
     }
 
     @Override
@@ -110,6 +108,52 @@ public class MainFragment extends FragmentBase {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void showLoginScreen(){
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    //converts arabic numerals to roman
+    private String arabicToRoman(int arabic){
+        switch (arabic){
+            case 1:
+                return "I";
+            case 2:
+                return "II";
+            case 3:
+                return "III";
+            case 4:
+                return "IV";
+            case 5:
+                return "V";
+            default:
+                return "VI";
+        }
+    }
+
+    //sets texts to the variable text fields
+    private void setTextsOnTextViews(){
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null) {
+            showLoginScreen();
+        }
+
+        TextView studentName = (TextView) mRootLayout.findViewById(R.id.text_view_student_name);
+        String firstName = currentUser.getString("firstName");
+        String lastName = currentUser.getString("lastName");
+
+        if (firstName != null && lastName != null)
+            studentName.setText(firstName + " " + lastName);
+
+        TextView location = (TextView) mRootLayout.findViewById(R.id.text_view_assigned_location);
+        location.setText(((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getName());
+
+        TextView waveNum = (TextView) mRootLayout.findViewById(R.id.text_view_wave_num);
+        int wave = ((App)getActivity().getApplication()).getUserInfo().getCurrentLocation().getWave();
+        waveNum.setText(arabicToRoman(wave));
     }
 
 }

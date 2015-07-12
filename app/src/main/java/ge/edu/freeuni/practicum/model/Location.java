@@ -1,31 +1,21 @@
 package ge.edu.freeuni.practicum.model;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 /**
- * Model class for location
- * Created by Giorgi on 7/7/2015.
+ * Data model for Location
+ * Created by Giorgi on 7/12/2015.
  */
-public class Location {
+@ParseClassName("Location")
+public class Location extends ParseObject{
 
-    private String name;
-    private int wave;
-
-    public Location(String name, int wave){
-
+    public String getName(){
+        return getString("name");
     }
 
-    public int getWave() {
-        return wave;
+    public int getWave(){
+        return getInt("wave");
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setWave(int wave) {
-        this.wave = wave;
-    }
 }

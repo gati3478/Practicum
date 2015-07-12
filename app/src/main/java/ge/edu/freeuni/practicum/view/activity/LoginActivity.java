@@ -27,7 +27,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.model.Location;
+import ge.edu.freeuni.practicum.model.UserInfo;
 import ge.edu.freeuni.practicum.view.dialog.InvalidEmailDialog;
 
 /**
@@ -269,13 +272,20 @@ public class LoginActivity extends AppCompatActivity implements
     //downloads additional information about the user
     private void getUserInfo(String email) {
         final LoginActivity loginActivity = this;
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserInfo");
+
+        ParseQuery<UserInfo> query = ParseQuery.getQuery(UserInfo.class);
+        query.include("currentLocation");
         query.whereEqualTo("userName", email);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
+        query.getFirstInBackground(new GetCallback<UserInfo>() {
+            public void done(UserInfo object, ParseException e) {
                 if (object == null) {
                     //error no info for that user
                 } else {
+
+                    //sets additional user info in app class to be retrieved by another activities
+                    ((App)getApplication()).setUserInfo(object);
+
+                    //starts MainActivity
                     Intent intent = new Intent(loginActivity, MainActivity.class);
                     startActivity(intent);
                 }
