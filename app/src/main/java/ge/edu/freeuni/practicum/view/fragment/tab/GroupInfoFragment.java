@@ -84,6 +84,7 @@ public class GroupInfoFragment extends Fragment {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("locationId", ((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getObjectId());
+        final App app = ((App) getActivity().getApplication());
 
         ParseCloud.callFunctionInBackground("studentsByLocation", params, new FunctionCallback<ArrayList<ParseUser>>() {
             public void done(ArrayList<ParseUser> result, ParseException e) {
@@ -94,7 +95,7 @@ public class GroupInfoFragment extends Fragment {
                         fullNames[i] = result.get(i).getString("firstName") + " " + result.get(i).getString("lastName");
                     }
 
-                    ((App) getActivity().getApplication()).setGroup(fullNames);
+                    app.setGroup(fullNames);
 
                     if (mRecyclerView != null) {
                         updateAdapter(mRecyclerView.getAdapter(), fullNames);

@@ -1,5 +1,6 @@
 package ge.edu.freeuni.practicum.view.fragment.tab;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,8 @@ import ge.edu.freeuni.practicum.view.activity.LoginActivity;
  * create an instance of this fragment.
  */
 public class BasicInfoFragment extends Fragment {
+
+    private App mApp;
 
     /**
      * Use this factory method to create a new instance of
@@ -73,15 +76,16 @@ public class BasicInfoFragment extends Fragment {
         final TextView groupSize = (TextView) view.findViewById(R.id.text_view_group_size);
 
         ParseQuery innerQuery = new ParseQuery("Location");
-        innerQuery.whereEqualTo("objectId", ((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getObjectId());
+        innerQuery.whereEqualTo("objectId", mApp.getUserInfo().getCurrentLocation().getObjectId());
 
-        if (((App) getActivity().getApplication()).getNumberOfStudents() == -1) {
+        if (mApp.getNumberOfStudents() == -1) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("UserInfo");
             query.whereMatchesQuery("currentLocation", innerQuery);
             query.countInBackground(new CountCallback() {
                 public void done(int count, ParseException e) {
                     if (e == null) {
-                        ((App) getActivity().getApplication()).setNumberOfStudents(count);
+
+                        mApp.setNumberOfStudents(count);
                         groupSize.setText("" + count);
                     } else {
                         // The request failed
@@ -89,13 +93,14 @@ public class BasicInfoFragment extends Fragment {
                 }
             });
         }else{
-            groupSize.setText("" + ((App) getActivity().getApplication()).getNumberOfStudents());
+            groupSize.setText("" + mApp.getNumberOfStudents());
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mApp = (App) getActivity().getApplication();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_basic_info, container, false);
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -113,16 +118,16 @@ public class BasicInfoFragment extends Fragment {
             studentName.setText(firstName + " " + lastName);
 
         TextView location = (TextView) view.findViewById(R.id.text_view_assigned_location);
-        location.setText(((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getName());
+        location.setText(mApp.getUserInfo().getCurrentLocation().getName());
 
         TextView waveNum = (TextView) view.findViewById(R.id.text_view_wave_num);
-        int wave = ((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getWave();
+        int wave = mApp.getUserInfo().getCurrentLocation().getWave();
         waveNum.setText(arabicToRoman(wave));
 
         numberOfStudents(view);
 
         TextView departDate = (TextView) view.findViewById(R.id.text_view_departure_date);
-        departDate.setText(((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getDate());
+        departDate.setText(mApp.getUserInfo().getCurrentLocation().getDate());
 
         TextView flatSurface = (TextView) view.findViewById(R.id.text_view_flat_surface);
         flatSurface.setText(getString(R.string.affirmative_exists));
