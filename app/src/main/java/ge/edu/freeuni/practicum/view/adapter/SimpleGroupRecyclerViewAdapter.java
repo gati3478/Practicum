@@ -8,13 +8,19 @@ import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.fragment.tab.GroupInfoFragment;
 
 /**
  * Placeholder adapter for group members
  */
-public class SimpleGroupRecyclerViewAdapter extends RecyclerView.Adapter<SimpleGroupRecyclerViewAdapter.ViewHolder> {
+public class SimpleGroupRecyclerViewAdapter extends RecyclerView.Adapter<SimpleGroupRecyclerViewAdapter.ViewHolder> implements GroupInfoFragment.SetAdapterData{
 
     private String[] mNames;
+
+    @Override
+    public void setAdapterData(String[] names) {
+        mNames = names;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
