@@ -25,27 +25,43 @@ import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
 import ge.edu.freeuni.practicum.model.Location;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsDownloadedListener;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsWishListDownloaded;
 
 /**
  * Advises users to use their university mails to log in
  * Created by Giorgi on 7/12/2015.
  */
 public class RequestExchangeDialog extends DialogFragment implements AdapterView.OnItemSelectedListener,
-        OnLocationsDownloadedListener{
+        OnLocationsDownloadedListener, OnLocationsWishListDownloaded{
 
     private Map<String, List<Integer>> mLocationWaveMap;
+    private List<Location> mLocations;
+    private Location mCurrentLocation;
 
     @Override
     public void onLocationsDownloaded(List<Location> locations, Location currentLocation) {
+
+        mLocations = locations;
+        mCurrentLocation = currentLocation;
+        ((App)getActivity().getApplication()).getWishListOfLocations(this);
+
+     }
+
+    @Override
+    public void onLocationsWishListDownloaded(List<Location> wishList) {
+
         mLocationWaveMap = new HashMap<>();
 
         //locations for the locationSpinner
         List<String > spinnerLocations = new ArrayList<>();
 
-        for (int i = 0; i < locations.size(); i++) {
-            Location location =  locations.get(i);
+        for (int i = 0; i < mLocations.size(); i++) {
+            Location location =  mLocations.get(i);
 
-            if (location.getObjectId().equals(currentLocation.getObjectId()))
+            if (location.getObjectId().equals(mCurrentLocation.getObjectId()))
+                continue;
+
+            if (wishList.contains(location))
                 continue;
 
             if (mLocationWaveMap.containsKey(location.getName())){
@@ -61,7 +77,7 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
         /* Setting up location spinner */
         setupLocationSpinner(spinnerLocations);
 
-     }
+    }
 
     /* The acitivty/fragment that creates an instance of this dialog fragment must
          * implement this interface in order to receive event callbacks.
@@ -78,8 +94,9 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
     private View mRootView;
 
     /* Temp */
-    private String prefLocation;
-    private int prefWave;
+    private Location prefLocation;
+    private String mPlace;
+    private int mWave;
 
     @SuppressLint("InflateParams")
     @NonNull
@@ -202,11 +219,19 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
 
             /* Setting up location spinner */
             setupWaveSpinner(generateWaveList(mLocationWaveMap.get(parent.getItemAtPosition(position).toString())));
-            prefLocation = parent.getItemAtPosition(position).toString();
+            mPlace = parent.getItemAtPosition(position).toString();
         }else {
 
             String[] waveSplit = parent.getItemAtPosition(position).toString().split(" ");
-            prefWave = romanToArabic(waveSplit[0]);
+            mWave = romanToArabic(waveSplit[0]);
+        }
+
+        for (int i = 0; i < mLocations.size(); i++) {
+            Location location =  mLocations.get(i);
+            if (location.getWave() == mWave && location.getName().equals(mPlace)){
+                prefLocation = location;
+                return;
+            }
         }
     }
 
@@ -215,12 +240,8 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
 
     }
 
-    public String getPreferredLocation() {
+    public Location getPreferredLocation() {
         return prefLocation;
-    }
-
-    public int getPreferredWave() {
-        return prefWave;
     }
 
 }

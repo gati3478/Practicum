@@ -37,6 +37,7 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
     }
 
     private RecyclerView mRecyclerView;
+    private List<Location> mWishList = null;
 
     /**
      * Use this factory method to create a new instance of
@@ -96,21 +97,25 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
 
     @Override
     public void onDialogPositiveClick(RequestExchangeDialog dialog) {
-        String loc = dialog.getPreferredLocation();
-        int wave = dialog.getPreferredWave();
+        Location loc = dialog.getPreferredLocation();
 
+        //TODO send info to Parse.com
         /* Notifying user */
         Snackbar.make(mRootLayout, getString(R.string.plus_btn_snackbar), Snackbar.LENGTH_SHORT)
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Delete request here
+                        mWishList.remove(mWishList.size()-1);
+                        mRecyclerView.getAdapter().notifyDataSetChanged();
                     }
                 })
                 .show();
 
         /* Refreshing RecyclerView */
-        mRecyclerView.swapAdapter(new ExchangeRecyclerViewAdapter(getActivity()), false);
+        if (mWishList != null) {
+            mWishList.add(loc);
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -121,6 +126,7 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
     @Override
     public void onLocationsWishListDownloaded(List<Location> wishList) {
 
+        mWishList = wishList;
         if (mRecyclerView != null){
             updateAdapter(mRecyclerView.getAdapter(), wishList);
             mRecyclerView.getAdapter().notifyDataSetChanged();
