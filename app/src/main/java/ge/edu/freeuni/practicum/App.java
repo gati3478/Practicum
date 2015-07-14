@@ -2,11 +2,13 @@ package ge.edu.freeuni.practicum;
 
 import android.app.Application;
 
+import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -19,6 +21,8 @@ import java.util.List;
 
 import ge.edu.freeuni.practicum.model.Location;
 import ge.edu.freeuni.practicum.model.UserInfo;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsDownloadedListener;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsWishListDownloaded;
 
 /**
  * Application class.
@@ -28,6 +32,8 @@ public class App extends Application {
     private UserInfo mUserInfo;
     private int mNumberOfStudentsInLocation;
     private String[] mGroup = null;
+    private List<Location> mLocations = null;
+    private List<Location> mWishList = null;
 
     @Override
     public void onCreate() {
@@ -44,13 +50,13 @@ public class App extends Application {
 
         HashMap<String, Object> params = new HashMap<>();
 //        params.put("email", "ggham12@freeuni.edu.ge");
-        params.put("locationId", "nQb9weOv0h");
+        params.put("userInfoId", "UNmof7YvDr");
 
-        ParseCloud.callFunctionInBackground("studentsByLocation", params, new FunctionCallback<ArrayList<ParseUser>>() {
-            public void done(ArrayList<ParseUser> result, ParseException e) {
+        ParseCloud.callFunctionInBackground("getWishList", params, new FunctionCallback<ArrayList<Location>>() {
+            public void done(ArrayList<Location> result, ParseException e) {
                 if (e == null) {
                     for (int i = 0; i < result.size(); i++) {
-                        System.out.println(result.get(i).getEmail());
+                        System.out.println(result.get(i).getName() + " " + result.get(i).getWave());
                         System.out.println("##############");
                     }
                 }
@@ -105,4 +111,55 @@ public class App extends Application {
     public String[] getGroup(){
         return mGroup;
     }
+
+    /**
+     * On the first time of invoking, this method downloads and saves the whole list of locations.
+     * Every subsequent call of this method the same list is used
+     */
+    public void getLocations(final OnLocationsDownloadedListener listener){
+
+        if (mLocations == null) {
+            ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
+            query.findInBackground(new FindCallback<Location>() {
+                @Override
+                public void done(List<Location> results, ParseException e) {
+                    if (e == null) {
+                        mLocations = results;
+                        if (listener != null){
+                            listener.onLocationsDownloaded(results, mUserInfo.getCurrentLocation());
+                        }
+                    }
+                }
+            });
+        }else {
+            listener.onLocationsDownloaded(mLocations, mUserInfo.getCurrentLocation());
+        }
+
+    }
+
+    /**
+     * On the first time of invoking, this method downloads and saves the wish list of locations.
+     * Every subsequent call of this method the same list is used
+     */
+    public void getWishListOfLocations(final OnLocationsWishListDownloaded listener){
+
+        if (mWishList == null) {
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("userInfoId", mUserInfo.getObjectId());
+
+            ParseCloud.callFunctionInBackground("getWishList", params, new FunctionCallback<ArrayList<Location>>() {
+                public void done(ArrayList<Location> result, ParseException e) {
+                    if (e == null) {
+                        mWishList = result;
+                        listener.onLocationsWishListDownloaded(mWishList);
+                    }
+                }
+            });
+        }else {
+            listener.onLocationsWishListDownloaded(mWishList);
+        }
+
+    }
+
 }

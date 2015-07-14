@@ -11,10 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.List;
+
+import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.model.Location;
 import ge.edu.freeuni.practicum.view.adapter.ExchangeRecyclerViewAdapter;
 import ge.edu.freeuni.practicum.view.dialog.RequestExchangeDialog;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsWishListDownloaded;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +29,12 @@ import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionList
  * Use the {@link ExchangeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExchangeFragment extends FragmentBase implements RequestExchangeDialog.NoticeDialogListener {
+public class ExchangeFragment extends FragmentBase implements RequestExchangeDialog.NoticeDialogListener,
+        OnLocationsWishListDownloaded{
+
+    public interface SetAdapterData{
+        void setAdapterData(List<Location> locations);
+    }
 
     private RecyclerView mRecyclerView;
 
@@ -62,6 +72,8 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
         mRecyclerView.setAdapter(new ExchangeRecyclerViewAdapter(getActivity()));
 
+        ((App)getActivity().getApplication()).getWishListOfLocations(this);
+
         FloatingActionButton fabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,9 +97,7 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
     @Override
     public void onDialogPositiveClick(RequestExchangeDialog dialog) {
         String loc = dialog.getPreferredLocation();
-        String wave = dialog.getPreferredWave();
-
-        Toast.makeText(getActivity(), loc + " " + wave, Toast.LENGTH_SHORT).show();
+        int wave = dialog.getPreferredWave();
 
         /* Notifying user */
         Snackbar.make(mRootLayout, getString(R.string.plus_btn_snackbar), Snackbar.LENGTH_SHORT)
@@ -108,4 +118,22 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
 
     }
 
+    @Override
+    public void onLocationsWishListDownloaded(List<Location> wishList) {
+
+        if (mRecyclerView != null){
+            updateAdapter(mRecyclerView.getAdapter(), wishList);
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    //updates wish list after the list is downloaded
+    private void updateAdapter(RecyclerView.Adapter adapter, List<Location> locations){
+        try {
+            ((SetAdapterData)adapter).setAdapterData(locations);
+        } catch (ClassCastException e) {
+            throw new ClassCastException(adapter.toString()
+                    + " must implement SetAdapterData");
+        }
+    }
 }

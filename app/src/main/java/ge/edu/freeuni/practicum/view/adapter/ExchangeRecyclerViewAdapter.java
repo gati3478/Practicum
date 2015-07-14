@@ -11,15 +11,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.model.Location;
+import ge.edu.freeuni.practicum.view.fragment.drawer.ExchangeFragment;
 
 /**
  * Placeholder adapter for group members
  */
-public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRecyclerViewAdapter.ViewHolder> {
+public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRecyclerViewAdapter.ViewHolder> implements ExchangeFragment.SetAdapterData{
 
     private Context mContext;
-    String[] mPlaces;
+    private List<Location> mLocations;
+
+    @Override
+    public void setAdapterData(List<Location> locations) {
+        mLocations = locations;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -43,7 +52,7 @@ public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRe
 
     public ExchangeRecyclerViewAdapter(Context context) {
         mContext = context;
-        mPlaces = mContext.getResources().getStringArray(R.array.default_exchange_queries);
+//        mPlaces = mContext.getResources().getStringArray(R.array.default_exchange_queries);
     }
 
     @Override
@@ -52,16 +61,29 @@ public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRe
         return new ViewHolder(view);
     }
 
+    // converts arabic numerals to roman
+    private String arabicToRoman(int arabic) {
+        switch (arabic) {
+            case 1:
+                return "I";
+            case 2:
+                return "II";
+            case 3:
+                return "III";
+            case 4:
+                return "IV";
+            case 5:
+                return "V";
+            default:
+                return "VI";
+        }
+    }
+
     @Override
     public void onBindViewHolder(ExchangeRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.mTextViewLoc.setText(mPlaces[position]);
 
-        if (position % 4 == 0)
-            holder.mTextViewWave.setText("ნაკადი III");
-        else if (position % 4 == 2)
-            holder.mTextViewWave.setText("ნაკადი I");
-        else
-            holder.mTextViewWave.setText("ნაკადი II");
+        holder.mTextViewLoc.setText(mLocations.get(position).getName());
+        holder.mTextViewWave.setText(arabicToRoman(mLocations.get(position).getWave()) + " " + mContext.getString(R.string.wave));
 
         final View view = holder.mView;
         view.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +103,7 @@ public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRe
 
     @Override
     public int getItemCount() {
-        return mPlaces.length;
+        return mLocations == null ? 0: mLocations.size();
     }
 
 }

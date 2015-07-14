@@ -14,8 +14,9 @@
     <string name="plus_btn_snackbar">მოთხოვნა მიღებულია</string>
     <string name="dialog_exchange_request">მოთხოვნა</string>
     <string name="cancel">გაუქმება</string>
-    <string name="dialog_exchange_request_msg">გთხოვთ აირჩიოთ თქვენთვის სასურველი საველე პრაქტიკის ლოკაცია</string>
+    <string name="dialog_exchange_request_msg">გთხოვთ აირჩიოთ საველე პრაქტიკის თქვენთვის სასურველი ლოკაცია</string>
     <string name="dialog_exchange_request_title">მოთხოვნა ადგილის გაცვლაზე</string>
     <string name="dialog_location">სასურველი ადგილი</string>
     <string name="dialog_wave">სასურველი ნაკადი</string>
+    <string name="wave">ნაკადი</string>
 </resources>

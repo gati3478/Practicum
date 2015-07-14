@@ -113,7 +113,7 @@ public class GroupInfoFragment extends Fragment {
             ((SetAdapterData) adapter).setAdapterData(data);
         } catch (ClassCastException e) {
             throw new ClassCastException(adapter.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement SetAdapterData");
         }
     }
 
