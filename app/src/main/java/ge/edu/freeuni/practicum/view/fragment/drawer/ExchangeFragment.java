@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -30,14 +29,14 @@ import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsWishListDownlo
  * create an instance of this fragment.
  */
 public class ExchangeFragment extends FragmentBase implements RequestExchangeDialog.NoticeDialogListener,
-        OnLocationsWishListDownloaded{
-
-    public interface SetAdapterData{
-        void setAdapterData(List<Location> locations);
-    }
+        OnLocationsWishListDownloaded {
 
     private RecyclerView mRecyclerView;
     private List<Location> mWishList = null;
+
+    public ExchangeFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -51,10 +50,6 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public ExchangeFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -73,7 +68,7 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
         mRecyclerView.setAdapter(new ExchangeRecyclerViewAdapter(getActivity()));
 
-        ((App)getActivity().getApplication()).getWishListOfLocations(this);
+        ((App) getActivity().getApplication()).getWishListOfLocations(this);
 
         FloatingActionButton fabBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_btn);
         fabBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +100,7 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mWishList.remove(mWishList.size()-1);
+                        mWishList.remove(mWishList.size() - 1);
                         mRecyclerView.getAdapter().notifyDataSetChanged();
                     }
                 })
@@ -127,19 +122,23 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
     public void onLocationsWishListDownloaded(List<Location> wishList) {
 
         mWishList = wishList;
-        if (mRecyclerView != null){
+        if (mRecyclerView != null) {
             updateAdapter(mRecyclerView.getAdapter(), wishList);
             mRecyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 
     //updates wish list after the list is downloaded
-    private void updateAdapter(RecyclerView.Adapter adapter, List<Location> locations){
+    private void updateAdapter(RecyclerView.Adapter adapter, List<Location> locations) {
         try {
-            ((SetAdapterData)adapter).setAdapterData(locations);
+            ((SetAdapterData) adapter).setAdapterData(locations);
         } catch (ClassCastException e) {
             throw new ClassCastException(adapter.toString()
                     + " must implement SetAdapterData");
         }
+    }
+
+    public interface SetAdapterData {
+        void setAdapterData(List<Location> locations);
     }
 }

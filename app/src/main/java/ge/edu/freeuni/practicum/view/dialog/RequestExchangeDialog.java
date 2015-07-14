@@ -12,9 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,20 +30,27 @@ import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsWishListDownlo
  * Created by Giorgi on 7/12/2015.
  */
 public class RequestExchangeDialog extends DialogFragment implements AdapterView.OnItemSelectedListener,
-        OnLocationsDownloadedListener, OnLocationsWishListDownloaded{
+        OnLocationsDownloadedListener, OnLocationsWishListDownloaded {
 
     private Map<String, List<Integer>> mLocationWaveMap;
     private List<Location> mLocations;
     private Location mCurrentLocation;
+    // Use this instance of the interface to deliver action events
+    private NoticeDialogListener mListener;
+    private View mRootView;
+    /* Temp */
+    private Location prefLocation;
+    private String mPlace;
+    private int mWave;
 
     @Override
     public void onLocationsDownloaded(List<Location> locations, Location currentLocation) {
 
         mLocations = locations;
         mCurrentLocation = currentLocation;
-        ((App)getActivity().getApplication()).getWishListOfLocations(this);
+        ((App) getActivity().getApplication()).getWishListOfLocations(this);
 
-     }
+    }
 
     @Override
     public void onLocationsWishListDownloaded(List<Location> wishList) {
@@ -53,10 +58,10 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
         mLocationWaveMap = new HashMap<>();
 
         //locations for the locationSpinner
-        List<String > spinnerLocations = new ArrayList<>();
+        List<String> spinnerLocations = new ArrayList<>();
 
         for (int i = 0; i < mLocations.size(); i++) {
-            Location location =  mLocations.get(i);
+            Location location = mLocations.get(i);
 
             if (location.getObjectId().equals(mCurrentLocation.getObjectId()))
                 continue;
@@ -64,9 +69,9 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
             if (wishList.contains(location))
                 continue;
 
-            if (mLocationWaveMap.containsKey(location.getName())){
+            if (mLocationWaveMap.containsKey(location.getName())) {
                 mLocationWaveMap.get(location.getName()).add(location.getWave());
-            }else {
+            } else {
                 List<Integer> temp = new ArrayList<>();
                 temp.add(location.getWave());
                 mLocationWaveMap.put(location.getName(), temp);
@@ -78,25 +83,6 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
         setupLocationSpinner(spinnerLocations);
 
     }
-
-    /* The acitivty/fragment that creates an instance of this dialog fragment must
-         * implement this interface in order to receive event callbacks.
-         * Each method passes the DialogFragment in case the host needs to query it. */
-    public interface NoticeDialogListener {
-        void onDialogPositiveClick(RequestExchangeDialog dialog);
-
-        void onDialogNegativeClick(RequestExchangeDialog dialog);
-    }
-
-    // Use this instance of the interface to deliver action events
-    private NoticeDialogListener mListener;
-
-    private View mRootView;
-
-    /* Temp */
-    private Location prefLocation;
-    private String mPlace;
-    private int mWave;
 
     @SuppressLint("InflateParams")
     @NonNull
@@ -111,7 +97,7 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
         mRootView = inflater.inflate(R.layout.request_exchange_dialog, null);
         builder.setView(mRootView);
 
-        ((App)getActivity().getApplication()).getLocations(this);
+        ((App) getActivity().getApplication()).getLocations(this);
 
         /* Setting Title and content message */
         builder.setMessage(R.string.dialog_exchange_request_msg).setTitle(R.string.dialog_exchange_request_title);
@@ -202,7 +188,7 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
     }
 
     //generates a list of String waves by a list of Integer waves
-    private List<String> generateWaveList(List<Integer> wave){
+    private List<String> generateWaveList(List<Integer> wave) {
         Collections.sort(wave);
         List<String> result = new ArrayList<>();
         for (int i = 0; i < wave.size(); i++) {
@@ -220,15 +206,15 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
             /* Setting up location spinner */
             setupWaveSpinner(generateWaveList(mLocationWaveMap.get(parent.getItemAtPosition(position).toString())));
             mPlace = parent.getItemAtPosition(position).toString();
-        }else {
+        } else {
 
             String[] waveSplit = parent.getItemAtPosition(position).toString().split(" ");
             mWave = romanToArabic(waveSplit[0]);
         }
 
         for (int i = 0; i < mLocations.size(); i++) {
-            Location location =  mLocations.get(i);
-            if (location.getWave() == mWave && location.getName().equals(mPlace)){
+            Location location = mLocations.get(i);
+            if (location.getWave() == mWave && location.getName().equals(mPlace)) {
                 prefLocation = location;
                 return;
             }
@@ -242,6 +228,15 @@ public class RequestExchangeDialog extends DialogFragment implements AdapterView
 
     public Location getPreferredLocation() {
         return prefLocation;
+    }
+
+    /* The acitivty/fragment that creates an instance of this dialog fragment must
+         * implement this interface in order to receive event callbacks.
+         * Each method passes the DialogFragment in case the host needs to query it. */
+    public interface NoticeDialogListener {
+        void onDialogPositiveClick(RequestExchangeDialog dialog);
+
+        void onDialogNegativeClick(RequestExchangeDialog dialog);
     }
 
 }
