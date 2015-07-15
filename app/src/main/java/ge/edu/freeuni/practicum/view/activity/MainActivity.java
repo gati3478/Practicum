@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 
-import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
 import ge.edu.freeuni.practicum.view.fragment.drawer.ExchangeFragment;
 import ge.edu.freeuni.practicum.view.fragment.drawer.InfoFragment;
