@@ -1,7 +1,5 @@
 package ge.edu.freeuni.practicum.view.fragment.drawer;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +10,6 @@ import android.view.ViewGroup;
 
 import ge.edu.freeuni.practicum.R;
 import ge.edu.freeuni.practicum.view.adapter.NotificationsRecyclerViewAdapter;
-import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +23,9 @@ public class NotificationsFragment extends FragmentBase {
 
     private RecyclerView mRecyclerView;
 
-    private OnFragmentInteractionListener mListener;
+    public NotificationsFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -41,10 +40,6 @@ public class NotificationsFragment extends FragmentBase {
         return fragment;
     }
 
-    public NotificationsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +52,7 @@ public class NotificationsFragment extends FragmentBase {
         initFragmentInstances();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
-        mRecyclerView.setAdapter(new NotificationsRecyclerViewAdapter(getActivity()));
+        mRecyclerView.setAdapter(new NotificationsRecyclerViewAdapter(getActivity(), this));
     }
 
     private void initFragmentInstances() {
@@ -71,30 +66,6 @@ public class NotificationsFragment extends FragmentBase {
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
 }

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,39 +19,19 @@ import ge.edu.freeuni.practicum.view.fragment.drawer.ExchangeFragment;
 /**
  * Placeholder adapter for group members
  */
-public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRecyclerViewAdapter.ViewHolder> implements ExchangeFragment.SetAdapterData{
+public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRecyclerViewAdapter.ViewHolder> implements ExchangeFragment.SetAdapterData {
 
     private Context mContext;
     private List<Location> mLocations;
 
-    @Override
-    public void setAdapterData(List<Location> locations) {
-        mLocations = locations;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public final View mView;
-        public final TextView mTextViewLoc;
-        public final TextView mTextViewWave;
-
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mTextViewLoc = (TextView) view.findViewById(R.id.exchange_target_location);
-            mTextViewWave = (TextView) view.findViewById(R.id.exchange_target_wave);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mTextViewLoc.getText() + " " + mTextViewWave.getText();
-        }
-
-    }
-
     public ExchangeRecyclerViewAdapter(Context context) {
         mContext = context;
 //        mPlaces = mContext.getResources().getStringArray(R.array.default_exchange_queries);
+    }
+
+    @Override
+    public void setAdapterData(List<Location> locations) {
+        mLocations = locations;
     }
 
     @Override
@@ -93,7 +72,6 @@ public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRe
                 animator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        Toast.makeText(mContext, "what.ever", Toast.LENGTH_SHORT).show();
                     }
                 });
                 animator.start();
@@ -103,7 +81,27 @@ public class ExchangeRecyclerViewAdapter extends RecyclerView.Adapter<ExchangeRe
 
     @Override
     public int getItemCount() {
-        return mLocations == null ? 0: mLocations.size();
+        return mLocations == null ? 0 : mLocations.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public final View mView;
+        public final TextView mTextViewLoc;
+        public final TextView mTextViewWave;
+
+        public ViewHolder(View view) {
+            super(view);
+            mView = view;
+            mTextViewLoc = (TextView) view.findViewById(R.id.exchange_target_location);
+            mTextViewWave = (TextView) view.findViewById(R.id.exchange_target_wave);
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " '" + mTextViewLoc.getText() + " " + mTextViewWave.getText();
+        }
+
     }
 
 }

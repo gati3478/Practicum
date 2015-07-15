@@ -19,4 +19,6 @@
     <string name="dialog_location">სასურველი ადგილი</string>
     <string name="dialog_wave">სასურველი ნაკადი</string>
     <string name="wave">ნაკადი</string>
+    <string name="dialog_exchange_notif_title">გაცვლა</string>
+    <string name="dialog_exchange_notif_msg">-ის მისაღებად თქვენ შეგიძლიათ ერთმანეთს გაუცვალოთ ადგილები</string>
 </resources>

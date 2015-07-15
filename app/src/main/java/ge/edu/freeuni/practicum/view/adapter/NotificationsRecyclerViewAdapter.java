@@ -4,15 +4,17 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.view.dialog.NotificationDialog;
+import ge.edu.freeuni.practicum.view.fragment.drawer.NotificationsFragment;
 
 /**
  * Placeholder adapter for group members
@@ -20,32 +22,12 @@ import ge.edu.freeuni.practicum.R;
 public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<NotificationsRecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
-    String[] mPlaces;
+    private NotificationsFragment mFrag;
+    private String[] mPlaces;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public final View mView;
-        public final ImageView mImageView;
-        public final TextView mTextViewLoc;
-        public final TextView mTextViewWave;
-
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mImageView = (ImageView) view.findViewById(R.id.exchange_icon);
-            mTextViewLoc = (TextView) view.findViewById(R.id.exchange_target_location);
-            mTextViewWave = (TextView) view.findViewById(R.id.exchange_target_wave);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mTextViewLoc.getText() + " " + mTextViewWave.getText();
-        }
-
-    }
-
-    public NotificationsRecyclerViewAdapter(Context context) {
+    public NotificationsRecyclerViewAdapter(Context context, NotificationsFragment frag) {
         mContext = context;
+        mFrag = frag;
         mPlaces = mContext.getResources().getStringArray(R.array.default_exchange_queries);
     }
 
@@ -56,7 +38,7 @@ public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<Notif
     }
 
     @Override
-    public void onBindViewHolder(NotificationsRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final NotificationsRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.mTextViewLoc.setText(mPlaces[position]);
 
         if (position % 4 == 0) {
@@ -78,7 +60,12 @@ public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<Notif
                 animator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        Toast.makeText(mContext, "what.ever", Toast.LENGTH_SHORT).show();
+                        String fullLocation = holder.mTextViewLoc.getText() + " " + holder.mTextViewWave.getText();
+                        NotificationDialog dialog = new NotificationDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putString(NotificationDialog.FULL_LOCATION, fullLocation);
+                        dialog.setArguments(bundle);
+                        dialog.show(mFrag.getChildFragmentManager(), "NotificationsFragment");
                     }
                 });
                 animator.start();
@@ -89,6 +76,28 @@ public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<Notif
     @Override
     public int getItemCount() {
         return mPlaces.length;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public final View mView;
+        public final ImageView mImageView;
+        public final TextView mTextViewLoc;
+        public final TextView mTextViewWave;
+
+        public ViewHolder(View view) {
+            super(view);
+            mView = view;
+            mImageView = (ImageView) view.findViewById(R.id.exchange_icon);
+            mTextViewLoc = (TextView) view.findViewById(R.id.exchange_target_location);
+            mTextViewWave = (TextView) view.findViewById(R.id.exchange_target_wave);
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " '" + mTextViewLoc.getText() + " " + mTextViewWave.getText();
+        }
+
     }
 
 }
