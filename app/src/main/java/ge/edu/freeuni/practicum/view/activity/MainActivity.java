@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 
+import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
 import ge.edu.freeuni.practicum.view.fragment.drawer.ExchangeFragment;
 import ge.edu.freeuni.practicum.view.fragment.drawer.InfoFragment;
@@ -31,13 +32,22 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private static final String SELECTED_MENU_ITEM_ID = "ge.edu.freeuni.practicum.SELECTED_ITEM_ID";
     private int mCurrMenuItemId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initInstances();
-        setOnDrawerStudentName();
+        if (ParseUser.getCurrentUser() == null) {
+            System.out.println("null");
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            System.out.println("not null");
+            initInstances();
+            setOnDrawerStudentName();
+        }
     }
 
     @Override

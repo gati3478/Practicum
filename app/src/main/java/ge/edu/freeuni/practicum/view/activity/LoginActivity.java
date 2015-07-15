@@ -20,14 +20,21 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.model.Location;
 import ge.edu.freeuni.practicum.model.UserInfo;
 import ge.edu.freeuni.practicum.view.dialog.InvalidEmailDialog;
 
@@ -260,37 +267,26 @@ public class LoginActivity extends AppCompatActivity implements
                     InvalidEmailDialog noSuchEmail = new InvalidEmailDialog();
                     noSuchEmail.show(getSupportFragmentManager(), "noSuchEmailDialog");
                 } else {
-                    getUserInfo(email);
+                    finishJob();
                 }
                 onSignOutClicked();
             }
         });
     }
 
-    //downloads additional information about the user
-    private void getUserInfo(String email) {
+    //
+    private void finishJob() {
         final LoginActivity loginActivity = this;
 
-        ParseQuery<UserInfo> query = ParseQuery.getQuery(UserInfo.class);
-        query.include("currentLocation");
-        query.whereEqualTo("userName", email);
-        query.getFirstInBackground(new GetCallback<UserInfo>() {
-            public void done(UserInfo object, ParseException e) {
-                if (object == null) {
-                    //error no info for that user
-                } else {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("user", ParseUser.getCurrentUser());
+        installation.saveInBackground();
 
-                    //sets additional user info in app class to be retrieved by another activities
-                    ((App) getApplication()).setUserInfo(object);
+        Intent intent = new Intent(loginActivity, MainActivity.class);
+        startActivity(intent);
 
-                    //starts MainActivity
-                    Intent intent = new Intent(loginActivity, MainActivity.class);
-                    startActivity(intent);
-                }
-                showProgress(false);
-                finish();
-            }
-        });
+        showProgress(false);
+        finish();
     }
 
 }

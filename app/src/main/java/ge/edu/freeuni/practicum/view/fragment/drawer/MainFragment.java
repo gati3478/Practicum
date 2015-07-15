@@ -14,8 +14,10 @@ import com.parse.ParseUser;
 
 import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.model.UserInfo;
 import ge.edu.freeuni.practicum.view.activity.LoginActivity;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnUserInfoDownloaded;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +27,7 @@ import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionList
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends FragmentBase {
+public class MainFragment extends FragmentBase implements OnUserInfoDownloaded {
 
     private OnFragmentInteractionListener mListener;
 
@@ -124,6 +126,17 @@ public class MainFragment extends FragmentBase {
             showLoginScreen();
         }
 
+        ((App) getActivity().getApplication()).getUserInfo(this);
+    }
+
+    @Override
+    public void onUserInfoDownloaded(UserInfo userInfo) {
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null) {
+            showLoginScreen();
+        }
+
         TextView studentName = (TextView) mRootLayout.findViewById(R.id.text_view_student_name);
         String firstName = currentUser.getString("firstName");
         String lastName = currentUser.getString("lastName");
@@ -132,10 +145,10 @@ public class MainFragment extends FragmentBase {
             studentName.setText(firstName + " " + lastName);
 
         TextView location = (TextView) mRootLayout.findViewById(R.id.text_view_assigned_location);
-        location.setText(((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getName());
+        location.setText(userInfo.getCurrentLocation().getName());
 
         TextView waveNum = (TextView) mRootLayout.findViewById(R.id.text_view_wave_num);
-        int wave = ((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getWave();
+        int wave = userInfo.getCurrentLocation().getWave();
         waveNum.setText(arabicToRoman(wave));
     }
 

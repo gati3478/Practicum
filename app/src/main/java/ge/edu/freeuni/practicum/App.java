@@ -4,9 +4,11 @@ import android.app.Application;
 
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -23,17 +25,23 @@ import ge.edu.freeuni.practicum.model.Location;
 import ge.edu.freeuni.practicum.model.UserInfo;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsDownloadedListener;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsWishListDownloaded;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnUserInfoDownloaded;
 
 /**
  * Application class.
  */
-public class App extends Application {
+public class App extends Application implements OnUserInfoDownloaded {
 
-    private UserInfo mUserInfo;
+    private UserInfo mUserInfo = null;
     private int mNumberOfStudentsInLocation;
     private String[] mGroup = null;
     private List<Location> mLocations = null;
     private List<Location> mWishList = null;
+    private OnLocationsWishListDownloaded listener1;
+    private OnLocationsDownloadedListener listener2;
+
+
+    private boolean whoCalled;
 
     @Override
     public void onCreate() {
@@ -48,36 +56,79 @@ public class App extends Application {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, getResources().getString(R.string.app_id), getResources().getString(R.string.client_key));
 
-        HashMap<String, Object> params = new HashMap<>();
-//        params.put("email", "ggham12@freeuni.edu.ge");
-        params.put("userInfoId", "UNmof7YvDr");
+//        ParseInstallation.getCurrentInstallation().saveInBackground();
 
-        ParseCloud.callFunctionInBackground("getWishList", params, new FunctionCallback<ArrayList<Location>>() {
-            public void done(ArrayList<Location> result, ParseException e) {
-                if (e == null) {
-                    for (int i = 0; i < result.size(); i++) {
-                        System.out.println(result.get(i).getName() + " " + result.get(i).getWave());
-                        System.out.println("##############");
-                    }
-                }
-            }
-        });
-    }
+//        HashMap<String, Object> params = new HashMap<>();
+////        params.put("email", "ggham12@freeuni.edu.ge");
+//        params.put("userInfoId", "UNmof7YvDr");
+//
+//        ParseCloud.callFunctionInBackground("getWishList", params, new FunctionCallback<ArrayList<Location>>() {
+//            public void done(ArrayList<Location> result, ParseException e) {
+//                if (e == null) {
+//                    for (int i = 0; i < result.size(); i++) {
+//                        System.out.println(result.get(i).getName() + " " + result.get(i).getWave());
+//                        System.out.println("##############");
+//                    }
+//                }
+//            }
+//        });
 
-    /**
-     * sets the UserInfo object of the current user
-     * @param userInfo UserINfo object to be set
-     */
-    public void setUserInfo(UserInfo userInfo){
-        mUserInfo = userInfo;
+        if (ParseUser.getCurrentUser() == null) {
+
+        } else {
+            // Associate the device with a user
+            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+            installation.put("user", ParseUser.getCurrentUser());
+            installation.saveInBackground();
+        }
     }
 
     /**
      *
-     * @return  UserInfo object of the current user
      */
-    public UserInfo getUserInfo(){
-        return mUserInfo;
+    public void getUserInfo(final OnUserInfoDownloaded listener) {
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        if (mUserInfo == null) {
+            ParseQuery<UserInfo> query = ParseQuery.getQuery(UserInfo.class);
+            query.include("currentLocation");
+            query.whereEqualTo("userName", currentUser.getString("email"));
+            query.getFirstInBackground(new GetCallback<UserInfo>() {
+                public void done(UserInfo object, ParseException e) {
+                    if (object == null) {
+                        //error no info for that user
+                    } else {
+
+                        listener.onUserInfoDownloaded(object);
+                        mUserInfo = object;
+
+                        // Associate the device with a user
+
+
+                        //send a test push notification
+                        //                    HashMap<String, Object> params = new HashMap<>();
+                        //
+                        //                    params.put("userInfoId", "UNmof7YvDr");
+                        //
+                        //                    ParseCloud.callFunctionInBackground("sendNotification", params, new FunctionCallback<String>() {
+                        //                        public void done(String result, ParseException e) {
+                        //                            if (e == null) {
+                        //
+                        //                                System.out.println(result);
+                        //                            }
+                        //                        }
+                        //                    });
+
+                        // starts MainActivity
+
+                    }
+
+                }
+            });
+        } else {
+            listener.onUserInfoDownloaded(mUserInfo);
+        }
     }
 
     /**
@@ -118,23 +169,35 @@ public class App extends Application {
      */
     public void getLocations(final OnLocationsDownloadedListener listener){
 
+        listener2 = listener;
+        if (mUserInfo == null) {
+            whoCalled = false;
+            getUserInfo(this);
+        } else {
+            getLocations();
+        }
+
+    }
+
+    private void getLocations() {
         if (mLocations == null) {
             ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
             query.findInBackground(new FindCallback<Location>() {
                 @Override
                 public void done(List<Location> results, ParseException e) {
+                    System.out.println("get locations");
                     if (e == null) {
+                        System.out.println("get locations e == null");
                         mLocations = results;
-                        if (listener != null){
-                            listener.onLocationsDownloaded(results, mUserInfo.getCurrentLocation());
+                        if (listener2 != null) {
+                            listener2.onLocationsDownloaded(results, mUserInfo.getCurrentLocation());
                         }
                     }
                 }
             });
         }else {
-            listener.onLocationsDownloaded(mLocations, mUserInfo.getCurrentLocation());
+            listener2.onLocationsDownloaded(mLocations, mUserInfo.getCurrentLocation());
         }
-
     }
 
     /**
@@ -143,6 +206,16 @@ public class App extends Application {
      */
     public void getWishListOfLocations(final OnLocationsWishListDownloaded listener){
 
+        listener1 = listener;
+        if (mUserInfo == null) {
+            whoCalled = true;
+            getUserInfo(this);
+        } else {
+            getWishList();
+        }
+    }
+
+    private void getWishList() {
         if (mWishList == null) {
 
             HashMap<String, Object> params = new HashMap<>();
@@ -150,16 +223,27 @@ public class App extends Application {
 
             ParseCloud.callFunctionInBackground("getWishList", params, new FunctionCallback<ArrayList<Location>>() {
                 public void done(ArrayList<Location> result, ParseException e) {
+                    System.out.println("get wishlist");
                     if (e == null) {
+                        System.out.println("get wishlist e == null");
                         mWishList = result;
-                        listener.onLocationsWishListDownloaded(mWishList);
+                        if (listener1 != null)
+                            listener1.onLocationsWishListDownloaded(mWishList);
                     }
                 }
             });
         }else {
-            listener.onLocationsWishListDownloaded(mWishList);
+            listener1.onLocationsWishListDownloaded(mWishList);
         }
-
     }
 
+    @Override
+    public void onUserInfoDownloaded(UserInfo userInfo) {
+        mUserInfo = userInfo;
+        if (whoCalled) {
+            getWishList();
+        } else {
+            getLocations();
+        }
+    }
 }

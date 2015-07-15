@@ -23,17 +23,24 @@ import java.util.HashMap;
 
 import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.model.UserInfo;
 import ge.edu.freeuni.practicum.view.adapter.SimpleGroupRecyclerViewAdapter;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnFragmentInteractionListener;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnUserInfoDownloaded;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link GroupInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GroupInfoFragment extends Fragment {
+public class GroupInfoFragment extends Fragment implements OnUserInfoDownloaded {
 
     private RecyclerView mRecyclerView;
+
+    @Override
+    public void onUserInfoDownloaded(UserInfo userInfo) {
+        downloadGroups(userInfo);
+    }
 
     public interface SetAdapterData{
         void setAdapterData(String[] names);
@@ -72,7 +79,7 @@ public class GroupInfoFragment extends Fragment {
         recyclerView.setAdapter(new SimpleGroupRecyclerViewAdapter(new String[]{}));
 
         if (((App) getActivity().getApplication()).getGroup() == null){
-            downloadGroups();
+            ((App) getActivity().getApplication()).getUserInfo(this);
         }else {
             updateAdapter(recyclerView.getAdapter(), ((App) getActivity().getApplication()).getGroup());
             recyclerView.getAdapter().notifyDataSetChanged();
@@ -80,10 +87,10 @@ public class GroupInfoFragment extends Fragment {
 
     }
 
-    private void downloadGroups(){
+    private void downloadGroups(UserInfo userInfo) {
 
         HashMap<String, Object> params = new HashMap<>();
-        params.put("locationId", ((App) getActivity().getApplication()).getUserInfo().getCurrentLocation().getObjectId());
+        params.put("locationId", userInfo.getCurrentLocation().getObjectId());
         final App app = ((App) getActivity().getApplication());
 
         ParseCloud.callFunctionInBackground("studentsByLocation", params, new FunctionCallback<ArrayList<ParseUser>>() {
