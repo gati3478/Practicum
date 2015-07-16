@@ -20,22 +20,12 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
-import com.parse.FunctionCallback;
-import com.parse.GetCallback;
 import com.parse.LogInCallback;
-import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
-import ge.edu.freeuni.practicum.model.Location;
-import ge.edu.freeuni.practicum.model.UserInfo;
 import ge.edu.freeuni.practicum.view.dialog.InvalidEmailDialog;
 
 /**

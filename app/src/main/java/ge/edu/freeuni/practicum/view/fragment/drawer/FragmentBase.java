@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import ge.edu.freeuni.practicum.R;
@@ -70,6 +71,14 @@ public abstract class FragmentBase extends Fragment {
         inflater.inflate(R.menu.menu_main, menu);
     }
 
+    private void turnOffNotifications() {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        if (installation != null) {
+            installation.remove("user");
+            installation.saveInBackground();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item))
@@ -84,6 +93,7 @@ public abstract class FragmentBase extends Fragment {
         switch (id) {
             case R.id.action_sign_out:
                 ParseUser.logOut();
+                turnOffNotifications();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();

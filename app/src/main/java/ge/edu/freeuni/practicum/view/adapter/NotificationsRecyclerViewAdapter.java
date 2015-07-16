@@ -12,23 +12,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.model.Cycle;
 import ge.edu.freeuni.practicum.view.dialog.NotificationDialog;
 import ge.edu.freeuni.practicum.view.fragment.drawer.NotificationsFragment;
 
 /**
  * Placeholder adapter for group members
  */
-public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<NotificationsRecyclerViewAdapter.ViewHolder> {
+public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<NotificationsRecyclerViewAdapter.ViewHolder> implements NotificationsFragment.OnSetAdapterData {
 
     private Context mContext;
     private NotificationsFragment mFrag;
-    private String[] mPlaces;
+    private List<Cycle> mCycles = null;
 
     public NotificationsRecyclerViewAdapter(Context context, NotificationsFragment frag) {
         mContext = context;
         mFrag = frag;
-        mPlaces = mContext.getResources().getStringArray(R.array.default_exchange_queries);
     }
 
     @Override
@@ -39,16 +42,13 @@ public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<Notif
 
     @Override
     public void onBindViewHolder(final NotificationsRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.mTextViewLoc.setText(mPlaces[position]);
+        holder.mTextViewLoc.setText(mCycles.get(position).getLocation());
 
-        if (position % 4 == 0) {
-            holder.mTextViewWave.setText("ნაკადი III");
-            holder.mImageView.setImageResource(R.drawable.ic_cycle_off);
-        } else if (position % 4 == 2) {
-            holder.mTextViewWave.setText("ნაკადი I");
+
+        holder.mTextViewWave.setText(mCycles.get(position).getWave());
+        if (mCycles.get(position).isAgreed()) {
             holder.mImageView.setImageResource(R.drawable.ic_cycle_on);
         } else {
-            holder.mTextViewWave.setText("ნაკადი II");
             holder.mImageView.setImageResource(R.drawable.ic_cycle_off);
         }
 
@@ -64,6 +64,7 @@ public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<Notif
                         NotificationDialog dialog = new NotificationDialog();
                         Bundle bundle = new Bundle();
                         bundle.putString(NotificationDialog.FULL_LOCATION, fullLocation);
+//                        bundle.putStringArrayList();
                         dialog.setArguments(bundle);
                         dialog.show(mFrag.getChildFragmentManager(), "NotificationsFragment");
                     }
@@ -75,7 +76,12 @@ public class NotificationsRecyclerViewAdapter extends RecyclerView.Adapter<Notif
 
     @Override
     public int getItemCount() {
-        return mPlaces.length;
+        return mCycles == null ? 0 : mCycles.size();
+    }
+
+    @Override
+    public void onSetAdapterData(List<Cycle> list) {
+        mCycles = list;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

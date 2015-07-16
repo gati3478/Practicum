@@ -8,8 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
+import ge.edu.freeuni.practicum.App;
 import ge.edu.freeuni.practicum.R;
+import ge.edu.freeuni.practicum.model.Cycle;
+import ge.edu.freeuni.practicum.model.Location;
+import ge.edu.freeuni.practicum.model.UserInfo;
 import ge.edu.freeuni.practicum.view.adapter.NotificationsRecyclerViewAdapter;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationDownloaded;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnNotificationsDownloaded;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnUserInfoDownloaded;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,9 +28,27 @@ import ge.edu.freeuni.practicum.view.adapter.NotificationsRecyclerViewAdapter;
  * Use the {@link NotificationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificationsFragment extends FragmentBase {
+public class NotificationsFragment extends FragmentBase implements OnNotificationsDownloaded, OnLocationDownloaded, OnUserInfoDownloaded {
 
     private RecyclerView mRecyclerView;
+    private UserInfo mUserInfo;
+
+    @Override
+    public void onLocationDownloaded(Location location) {
+        if (mRecyclerView != null)
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onUserInfoDownloaded(UserInfo userInfo) {
+        mUserInfo = userInfo;
+        if (getActivity() != null)
+            ((App) getActivity().getApplication()).getNotifications(this);
+    }
+
+    public interface OnSetAdapterData {
+        void onSetAdapterData(List<Cycle> list);
+    }
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -53,6 +80,7 @@ public class NotificationsFragment extends FragmentBase {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
         mRecyclerView.setAdapter(new NotificationsRecyclerViewAdapter(getActivity(), this));
+        ((App) getActivity().getApplication()).getNewUserInfo(this);
     }
 
     private void initFragmentInstances() {
@@ -68,4 +96,16 @@ public class NotificationsFragment extends FragmentBase {
         return view;
     }
 
+    @Override
+    public void onNotificationsDownloaded(List<Cycle> cycles) {
+        if (mRecyclerView != null) {
+            try {
+                ((OnSetAdapterData) mRecyclerView.getAdapter()).onSetAdapterData(cycles);
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+            } catch (ClassCastException e) {
+                throw new ClassCastException(mRecyclerView.getAdapter().toString()
+                        + " must implement OnSetAdapterData");
+            }
+        }
+    }
 }

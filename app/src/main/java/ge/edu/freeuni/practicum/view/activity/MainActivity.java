@@ -38,12 +38,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         setContentView(R.layout.activity_main);
 
         if (ParseUser.getCurrentUser() == null) {
-            System.out.println("null");
+
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         } else {
-            System.out.println("not null");
+
             initInstances();
             setOnDrawerStudentName();
         }

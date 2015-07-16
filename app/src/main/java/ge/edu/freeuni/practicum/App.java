@@ -20,11 +20,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import ge.edu.freeuni.practicum.model.Cycle;
 import ge.edu.freeuni.practicum.model.Location;
 import ge.edu.freeuni.practicum.model.UserInfo;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationDownloaded;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsDownloadedListener;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnLocationsWishListDownloaded;
+import ge.edu.freeuni.practicum.view.fragment.listener.OnNotificationsDownloaded;
 import ge.edu.freeuni.practicum.view.fragment.listener.OnUserInfoDownloaded;
 
 /**
@@ -39,7 +45,6 @@ public class App extends Application implements OnUserInfoDownloaded {
     private List<Location> mWishList = null;
     private OnLocationsWishListDownloaded listener1;
     private OnLocationsDownloadedListener listener2;
-
 
     private boolean whoCalled;
 
@@ -56,17 +61,41 @@ public class App extends Application implements OnUserInfoDownloaded {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, getResources().getString(R.string.app_id), getResources().getString(R.string.client_key));
 
-//        ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("cycle", "JrTcLgUUhD");
+        params.put("email", "gkink12@freeuni.edu.ge");
+        params.put("decision", "JrTcLgUUhD");
+
+        ParseCloud.callFunctionInBackground("updateCycle", params, new FunctionCallback<String>() {
+            public void done(String result, ParseException e) {
+                if (e == null) {
+//                    for (int i = 0; i < result.size(); i++) {
+//                        for (int j = 0; j < result.get(i).size(); j++){
+//                            System.out.println(result.get(i).get(j).get("user"));
+//                            System.out.println(result.get(i).get(j).get("agreed"));
+//                            System.out.println(result.get(i).get(j).get("cycleId"));
+//                            System.out.println(result.get(i).get(j).get("locationId"));
+//
+//                        }
+//                        System.out.println("##############");
+//                    }
+                    System.out.println(result);
+                }
+            }
+        });
 
 //        HashMap<String, Object> params = new HashMap<>();
-////        params.put("email", "ggham12@freeuni.edu.ge");
-//        params.put("userInfoId", "UNmof7YvDr");
+//        params.put("locationId", "nQb9weOv0h");
+//        params.put("email", "gkink12@freeuni.edu.ge");
 //
-//        ParseCloud.callFunctionInBackground("getWishList", params, new FunctionCallback<ArrayList<Location>>() {
-//            public void done(ArrayList<Location> result, ParseException e) {
+//        ParseCloud.callFunctionInBackground("findCycles", params, new FunctionCallback<ArrayList<String>>() {
+//            public void done(ArrayList<String> result, ParseException e) {
 //                if (e == null) {
 //                    for (int i = 0; i < result.size(); i++) {
-//                        System.out.println(result.get(i).getName() + " " + result.get(i).getWave());
+//
+//                            System.out.println(result.get(i));
 //                        System.out.println("##############");
 //                    }
 //                }
@@ -76,6 +105,7 @@ public class App extends Application implements OnUserInfoDownloaded {
         if (ParseUser.getCurrentUser() == null) {
 
         } else {
+
             // Associate the device with a user
             ParseInstallation installation = ParseInstallation.getCurrentInstallation();
             installation.put("user", ParseUser.getCurrentUser());
@@ -93,6 +123,7 @@ public class App extends Application implements OnUserInfoDownloaded {
         if (mUserInfo == null) {
             ParseQuery<UserInfo> query = ParseQuery.getQuery(UserInfo.class);
             query.include("currentLocation");
+            query.include("approvedCycle");
             query.whereEqualTo("userName", currentUser.getString("email"));
             query.getFirstInBackground(new GetCallback<UserInfo>() {
                 public void done(UserInfo object, ParseException e) {
@@ -102,28 +133,7 @@ public class App extends Application implements OnUserInfoDownloaded {
 
                         listener.onUserInfoDownloaded(object);
                         mUserInfo = object;
-
-                        // Associate the device with a user
-
-
-                        //send a test push notification
-                        //                    HashMap<String, Object> params = new HashMap<>();
-                        //
-                        //                    params.put("userInfoId", "UNmof7YvDr");
-                        //
-                        //                    ParseCloud.callFunctionInBackground("sendNotification", params, new FunctionCallback<String>() {
-                        //                        public void done(String result, ParseException e) {
-                        //                            if (e == null) {
-                        //
-                        //                                System.out.println(result);
-                        //                            }
-                        //                        }
-                        //                    });
-
-                        // starts MainActivity
-
                     }
-
                 }
             });
         } else {
@@ -185,9 +195,9 @@ public class App extends Application implements OnUserInfoDownloaded {
             query.findInBackground(new FindCallback<Location>() {
                 @Override
                 public void done(List<Location> results, ParseException e) {
-                    System.out.println("get locations");
+
                     if (e == null) {
-                        System.out.println("get locations e == null");
+
                         mLocations = results;
                         if (listener2 != null) {
                             listener2.onLocationsDownloaded(results, mUserInfo.getCurrentLocation());
@@ -223,9 +233,9 @@ public class App extends Application implements OnUserInfoDownloaded {
 
             ParseCloud.callFunctionInBackground("getWishList", params, new FunctionCallback<ArrayList<Location>>() {
                 public void done(ArrayList<Location> result, ParseException e) {
-                    System.out.println("get wishlist");
+
                     if (e == null) {
-                        System.out.println("get wishlist e == null");
+
                         mWishList = result;
                         if (listener1 != null)
                             listener1.onLocationsWishListDownloaded(mWishList);
@@ -245,5 +255,81 @@ public class App extends Application implements OnUserInfoDownloaded {
         } else {
             getLocations();
         }
+    }
+
+    public void getNotifications(final OnNotificationsDownloaded listener) {
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("email", ParseUser.getCurrentUser().getEmail());
+
+        final List<Cycle> cycles = new ArrayList<>();
+
+        ParseCloud.callFunctionInBackground("getNotifications", params, new FunctionCallback<ArrayList<ArrayList<HashMap<String, String>>>>() {
+            public void done(ArrayList<ArrayList<HashMap<String, String>>> result, ParseException e) {
+
+                if (e == null) {
+
+                    for (int i = 0; i < result.size(); i++) {
+//                        System.out.println(i);
+                        cycles.add(new Cycle(result.get(i).get(0).get("cycleId"), result.get(i)));
+                        getNotificationName(result.get(i), i, cycles, (OnLocationDownloaded) listener);
+//                        for (int j = 0; j < result.get(i).size(); j++) {
+//                            System.out.println(result.get(i).get(j).get("user"));
+//                            System.out.println(result.get(i).get(j).get("agreed"));
+//                            System.out.println(result.get(i).get(j).get("cycleId"));
+//                        }
+                    }
+                    listener.onNotificationsDownloaded(cycles);
+                }
+            }
+        });
+
+    }
+
+    private void getNotificationName(final ArrayList<HashMap<String, String>> cycle, final int num, final List<Cycle> cycles, final OnLocationDownloaded locationDownloaded) {
+        for (int i = 0; i < cycle.size(); i++) {
+            HashMap<String, String> temp = cycle.get(i);
+            if (temp.get("user").equals(ParseUser.getCurrentUser().getEmail())) {
+
+                ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
+                query.getInBackground(temp.get("locationId"), new GetCallback<Location>() {
+                    public void done(Location object, ParseException e) {
+                        if (e == null) {
+                            cycles.get(num).setLocation(object);
+//                            System.out.println(cycles.get(num).getId() + " " + mUserInfo.getApprovedCycle().getObjectId());
+                            if (mUserInfo.getApprovedCycle() != null && cycles.get(num).getId().equals(mUserInfo.getApprovedCycle().getObjectId()))
+                                cycles.get(num).setAgreed(true);
+                            locationDownloaded.onLocationDownloaded(object);
+                        } else {
+                            // something went wrong
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Downloads a user info from Parse.com
+     */
+    public void getNewUserInfo(final OnUserInfoDownloaded listener) {
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        ParseQuery<UserInfo> query = ParseQuery.getQuery(UserInfo.class);
+        query.include("currentLocation");
+        query.include("approvedCycle");
+        query.whereEqualTo("userName", currentUser.getString("email"));
+        query.getFirstInBackground(new GetCallback<UserInfo>() {
+            public void done(UserInfo object, ParseException e) {
+                if (object == null) {
+                    //error no info for that user
+                } else {
+
+                    listener.onUserInfoDownloaded(object);
+                    mUserInfo = object;
+                }
+            }
+        });
     }
 }

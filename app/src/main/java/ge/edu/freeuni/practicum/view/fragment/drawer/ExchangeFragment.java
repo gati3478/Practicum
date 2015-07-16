@@ -10,6 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
+
+import java.util.HashMap;
 import java.util.List;
 
 import ge.edu.freeuni.practicum.App;
@@ -90,10 +95,24 @@ public class ExchangeFragment extends FragmentBase implements RequestExchangeDia
         return view;
     }
 
+    private void sendNotification() {
+        //send a test push notification
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("userInfoId", "UNmof7YvDr");
+        ParseCloud.callFunctionInBackground("sendNotification", params, new FunctionCallback<String>() {
+            public void done(String result, ParseException e) {
+                if (e == null) {
+
+                    System.out.println(result);
+                }
+            }
+        });
+    }
+
     @Override
     public void onDialogPositiveClick(RequestExchangeDialog dialog) {
         Location loc = dialog.getPreferredLocation();
-
+        sendNotification();
         //TODO send info to Parse.com
         /* Notifying user */
         Snackbar.make(mRootLayout, getString(R.string.plus_btn_snackbar), Snackbar.LENGTH_SHORT)

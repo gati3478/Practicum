@@ -50,7 +50,7 @@ public class NotificationDialog extends DialogFragment {
         // First example student (should also listen for updates on network)
         View elemView1 = inflater.inflate(R.layout.notif_dialog_elem, null);
         TextView textView1 = (TextView) elemView1.findViewById(R.id.text_view_student_name);
-        textView1.setText(getString(R.string.default_student_name) + "1");
+        textView1.setText(getString(R.string.default_student_name));
         Switch switchElem1 = (Switch) elemView1.findViewById(R.id.switch_indicator);
         switchElem1.setEnabled(false);
 
@@ -60,7 +60,7 @@ public class NotificationDialog extends DialogFragment {
         // Second example student (should also listen for updates on network)
         View elemView2 = inflater.inflate(R.layout.notif_dialog_elem, null);
         TextView textView2 = (TextView) elemView2.findViewById(R.id.text_view_student_name);
-        textView2.setText(getString(R.string.default_student_name) + "2");
+        textView2.setText("ნათია ფათახი");
         Switch switchElem2 = (Switch) elemView2.findViewById(R.id.switch_indicator);
         switchElem2.setChecked(true);
         switchElem2.setEnabled(false);
@@ -73,7 +73,7 @@ public class NotificationDialog extends DialogFragment {
         View elemView3 = inflater.inflate(R.layout.notif_dialog_elem, null);
         TextView textView3 = (TextView) elemView3.findViewById(R.id.text_view_student_name);
         textView3.setText(firstName + " " + lastName);
-        Switch switchElem3 = (Switch) elemView3.findViewById(R.id.switch_indicator);
+        final Switch switchElem3 = (Switch) elemView3.findViewById(R.id.switch_indicator);
         switchElem3.setEnabled(true);
         switchElem3.setChecked(false);
 
@@ -96,6 +96,7 @@ public class NotificationDialog extends DialogFragment {
         builder.setPositiveButton(R.string.actioin_got_it, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //mListener.onDialogPositiveClick(NotificationDialog.this);
+
             }
         });
 

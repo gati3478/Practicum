@@ -23,4 +23,8 @@ public class UserInfo extends ParseObject{
         put("currentLocation", currentLocationId);
     }
 
+    public ParseObject getApprovedCycle() {
+        return getParseObject("approvedCycle");
+    }
+
 }
