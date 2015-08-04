@@ -13,16 +13,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import ge.edu.freeuni.practicum.model.Cycle;
 import ge.edu.freeuni.practicum.model.Location;
@@ -142,42 +135,42 @@ public class App extends Application implements OnUserInfoDownloaded {
     }
 
     /**
-     * sets number of students in the user's current location
-     * @param numberOfStudents number of students to be set
+     * @return number of students in the user's current location
      */
-    public void setNumberOfStudents(int numberOfStudents){
-        mNumberOfStudentsInLocation = numberOfStudents;
-    }
-
-    /**
-     *
-     * @return  number of students in the user's current location
-     */
-    public int getNumberOfStudents(){
+    public int getNumberOfStudents() {
         return mNumberOfStudentsInLocation;
     }
 
     /**
-     * sets the group of people in the user's current location
-     * @param group group of students to be set
+     * sets number of students in the user's current location
+     *
+     * @param numberOfStudents number of students to be set
      */
-    public void setGroup(String[] group){
-        mGroup = group;
+    public void setNumberOfStudents(int numberOfStudents) {
+        mNumberOfStudentsInLocation = numberOfStudents;
     }
 
     /**
-     *
-     * @return  returns the group of people in the user's current location
+     * @return returns the group of people in the user's current location
      */
-    public String[] getGroup(){
+    public String[] getGroup() {
         return mGroup;
+    }
+
+    /**
+     * sets the group of people in the user's current location
+     *
+     * @param group group of students to be set
+     */
+    public void setGroup(String[] group) {
+        mGroup = group;
     }
 
     /**
      * On the first time of invoking, this method downloads and saves the whole list of locations.
      * Every subsequent call of this method the same list is used
      */
-    public void getLocations(final OnLocationsDownloadedListener listener){
+    public void getLocations(final OnLocationsDownloadedListener listener) {
 
         listener2 = listener;
         if (mUserInfo == null) {
@@ -205,7 +198,7 @@ public class App extends Application implements OnUserInfoDownloaded {
                     }
                 }
             });
-        }else {
+        } else {
             listener2.onLocationsDownloaded(mLocations, mUserInfo.getCurrentLocation());
         }
     }
@@ -214,7 +207,7 @@ public class App extends Application implements OnUserInfoDownloaded {
      * On the first time of invoking, this method downloads and saves the wish list of locations.
      * Every subsequent call of this method the same list is used
      */
-    public void getWishListOfLocations(final OnLocationsWishListDownloaded listener){
+    public void getWishListOfLocations(final OnLocationsWishListDownloaded listener) {
 
         listener1 = listener;
         if (mUserInfo == null) {
@@ -242,7 +235,7 @@ public class App extends Application implements OnUserInfoDownloaded {
                     }
                 }
             });
-        }else {
+        } else {
             listener1.onLocationsWishListDownloaded(mWishList);
         }
     }
