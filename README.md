@@ -11,4 +11,4 @@
 
 ![Sign-in][signin]
 
-[signin]: https://github.com/gati3478/Practicum/blob/master/icons/screenshot_2.png "Sign-in screenshot"
+[signin]: https://github.com/gati3478/Practicum/blob/master/screenshots/screenshot_2.png "Sign-in screenshot"
