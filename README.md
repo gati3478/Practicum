@@ -7,6 +7,8 @@
 
 ![Welcome][welcome]
 
-![Sign-in][signin]
 [welcome]: https://github.com/gati3478/Practicum/blob/master/screenshots/screenshot_1.png "Welcome screenshot"
-[signing]: https://github.com/gati3478/Practicum/blob/master/icons/screenshot_2.png "Sign-in screenshot"
+
+![Sign-in][signin]
+
+[signin]: https://github.com/gati3478/Practicum/blob/master/icons/screenshot_2.png "Sign-in screenshot"
